@@ -21,8 +21,8 @@ class _ExampleScreenState extends State<ExampleScreen> {
             PickerInstagram.instagramPicker(
               type: PickerInsta.both,
               onComplete: (value) {
-                Get.back();
                 if ((value ?? []).isNotEmpty) {
+                  
                   Get.to(
                     () => PreviewAssetPickedScreen(
                       preViewList: value ?? [],

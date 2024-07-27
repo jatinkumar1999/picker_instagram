@@ -11,7 +11,7 @@ Usage
 
 Please check the latest version before installation. If there is any problem with the new version, please use the previous version
 
-````bash
+```bash
 dependencies:
 flutter:
 sdk: flutter
@@ -20,9 +20,7 @@ sdk: flutter
 
 picker_instagram: ^{latest version}
 
-````
-
-
+```
 
 2.  Add the following imports to your Dart code
 
@@ -53,8 +51,8 @@ class _ExampleScreenState extends State<ExampleScreen> {
             PickerInstagram.instagramPicker(
               type: PickerInsta.both,
               onComplete: (value) {
-                Get.back();
                 if ((value ?? []).isNotEmpty) {
+                 // Here add your after assets selected asset logic.
                   Get.to(
                     () => PreviewAssetPickedScreen(
                       preViewList: value ?? [],

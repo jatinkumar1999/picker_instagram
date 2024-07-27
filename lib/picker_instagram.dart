@@ -22,11 +22,12 @@ class PickerInstagram {
           if (value == null) {
             onComplete(null);
           } else {
+            Get.back();
             onComplete(value);
           }
         },
       ),
-      duration: const Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 300),
       transition: Transition.downToUp,
     );
   }
