@@ -19,7 +19,8 @@ sdk: flutter
 
 picker_instagram: ^{latest version}
 
-2. Add the following imports to your Dart code
+
+ 2. Add the following imports to your Dart code
 
 import 'package:picker_instagram/picker_instagram.dart';
 
@@ -38,6 +39,39 @@ import 'package:picker_instagram/picker_instagram.dart';
    },
    );
 
+
+To use this package, ensure you have added the required permissions to your `AndroidManifest.xml` and `Info.plist` files as shown below:
+
+ #### Android
+```xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.yourcompany.yourpackage">
+
+   
+ <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+ <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+ <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+ <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+ <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" /> 
+
+<application
+....
+ />
+</manifest>
+
+
+#### iOS 
+  <key>NSCameraUsageDescription</key>
+    <string>your usage description here</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>your usage description here</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+   <string>We need access to your photo library to select and upload photos.</string>
+   <key>NSPhotoLibraryAddUsageDescription</key>
+   <string>We need access to save photos to your photo library.</string>
+
+
 Screenshots
 
 ![Screenshot 1](assets/screenshot_01.png)
@@ -46,4 +80,4 @@ Screenshots
 
 ![Screenshot 3](assets/screenshot_03.png)
 
-Iicker Instagram:
+
