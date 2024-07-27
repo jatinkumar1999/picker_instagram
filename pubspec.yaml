@@ -1,8 +1,8 @@
 name: picker_instagram
 description: "A Flutter package for picking images or the videos or both from the Gallery."
-version: 0.0.2
+version: 0.0.3
 homepage:
-publish_to: https://pub.dev/publishers/jatinbhardwaj.com
+
 repository: https://github.com/jatinkumar1999/picker_instagram.git
 
 environment:
@@ -12,7 +12,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  
+
   video_thumbnail: ^0.5.3
   camera: ^0.11.0+1
   path: ^1.9.0
