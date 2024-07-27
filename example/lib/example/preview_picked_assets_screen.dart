@@ -8,11 +8,11 @@ import 'package:get/get.dart';
 import 'package:photo_gallery/photo_gallery.dart';
 import 'package:picker_instagram/constants/video_image_picker/insta_image_picker_controller.dart';
 
-
 class PreviewAssetPickedScreen extends StatefulWidget {
   final List<SetImageModal>? preViewList;
   final List<Uint8List>? memoryImage;
-  const PreviewAssetPickedScreen({super.key, this.preViewList, this.memoryImage});
+  const PreviewAssetPickedScreen(
+      {super.key, this.preViewList, this.memoryImage});
 
   @override
   State<PreviewAssetPickedScreen> createState() =>
@@ -80,14 +80,6 @@ class _PreviewAssetPickedScreenState extends State<PreviewAssetPickedScreen> {
                             ),
                             padding: const EdgeInsets.all(10),
                             child: const FaIcon(FontAwesomeIcons.xmark),
-
-                            // child: CustomImageView(
-                            //   imagePath: ImageConstant.crossCancel,
-                            //   width: 15,
-                            //   height: 15,
-                            //   fit: BoxFit.contain,
-                            //   color: Colors.black,
-                            // ),
                           ),
                         ),
                       ),
@@ -117,16 +109,7 @@ class _PreviewAssetPickedScreenState extends State<PreviewAssetPickedScreen> {
                                     shape: BoxShape.circle,
                                   ),
                                   padding: const EdgeInsets.all(10),
-
                                   child: const FaIcon(FontAwesomeIcons.xmark),
-
-                                  // child: CustomImageView(
-                                  //   imagePath: ImageConstant.crossCancel,
-                                  //   width: 15,
-                                  //   height: 15,
-                                  //   fit: BoxFit.contain,
-                                  //   color: Colors.black,
-                                  // ),
                                 ),
                               ),
                             ),
