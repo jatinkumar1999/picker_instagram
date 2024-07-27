@@ -25,7 +25,13 @@ picker_instagram: ^{latest version}
 
 2.  Add the following imports to your Dart code
 
+
+```bash
+
 import 'package:picker_instagram/picker_instagram.dart';
+
+
+```
 
 3. Simply Call this:
 
