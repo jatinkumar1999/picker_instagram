@@ -1,9 +1,10 @@
 picker_instagram
 
-A Flutter package for picking images or the videos or both from the Gallery.
 
 Getting Started
-This plugin displays a gallery with user's Instagram Albums and Photos,
+
+A Flutter package for picking images or the videos or both from the Gallery.
+
 
 Usage
 
