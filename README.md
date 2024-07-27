@@ -79,7 +79,7 @@ To use this package, ensure you have added the required permissions to your `And
 
 
  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
  <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
  <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
  <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
@@ -99,18 +99,24 @@ To use this package, ensure you have added the required permissions to your `And
 <dict>
 	...
 
-   <key>NSCameraUsageDescription</key>
-   <string>your usage description here</string>
-   <key>NSMicrophoneUsageDescription</key>
-   <string>your usage description here</string>
-   <key>NSPhotoLibraryUsageDescription</key>
-   <string>We need access to your photo library to select and upload photos.</string>
-   <key>NSPhotoLibraryAddUsageDescription</key>
+<key>NSCameraUsageDescription</key>
+<string>your usage description here</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>your usage description here</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>We need access to your photo library to select and upload photos.</string>
+<key>NSPhotoLibraryAddUsageDescription</key>
    <string>We need access to save photos to your photo library.</string>
 
 </dict>
 </plist>
 
+
+
+
+
+
+````
 
 
 Screenshots
@@ -120,6 +126,3 @@ Screenshots
 ![Screenshot 2](assets/screenshot_02.png)
 
 ![Screenshot 3](assets/screenshot_03.png)
-
-
-````
