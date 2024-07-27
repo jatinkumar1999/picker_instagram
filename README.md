@@ -32,7 +32,7 @@ import 'package:picker_instagram/picker_instagram.dart';
 
 ```
 
-3. Simply Call this:
+3. Simply Call this
 
 ````bash
 import 'package:flutter/material.dart';
