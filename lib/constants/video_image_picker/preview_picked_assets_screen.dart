@@ -1,14 +1,11 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:custom_image_view/custom_image_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:photo_manager/photo_manager.dart';
+import 'package:photo_gallery/photo_gallery.dart';
 
-import '../constants/image_constants.dart';
 import 'commmon_video_player.dart';
 import 'insta_image_picker_controller.dart';
 
@@ -56,14 +53,12 @@ class _PreviewAssetPickedScreenState extends State<PreviewAssetPickedScreen> {
             width: Get.width,
             height: Get.height * 0.45,
             child: PageView.builder(
-              // padding: const EdgeInsets.symmetric(horizontal: 20),
               scrollDirection: Axis.horizontal,
-              // itemCount: preViewList?.length ?? 0,
               itemCount: preViewList?.length,
               itemBuilder: (c, i) {
                 var dd = preViewList?[i];
 
-                if (dd!.type == AssetType.image) {
+                if (dd!.type == MediumType.image) {
                   return Stack(
                     children: [
                       Image.file(File(dd.realFile!.path),
@@ -80,33 +75,33 @@ class _PreviewAssetPickedScreenState extends State<PreviewAssetPickedScreen> {
                             setState(() {});
                           },
                           child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.transparent,
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
                               shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Colors.black,
-                                width: 3,
-                              ),
                             ),
                             padding: const EdgeInsets.all(10),
-                            child: const FaIcon(
-                              FontAwesomeIcons.xmark,
-                              color: Colors.black,
-                              size: 20,
-                            ),
+                            child: const FaIcon(FontAwesomeIcons.xmark),
+
+                            // child: CustomImageView(
+                            //   imagePath: ImageConstant.crossCancel,
+                            //   width: 15,
+                            //   height: 15,
+                            //   fit: BoxFit.contain,
+                            //   color: Colors.black,
+                            // ),
                           ),
                         ),
                       ),
                     ],
                   );
                 } else {
-                  return dd.type == AssetType.video
+                  return dd.type == MediumType.video
                       ? Stack(
                           children: [
-                            CustomVideoPLayer(
-                              file: dd.realFile!,
+                            VideoPlayerWithFileUrl(
+                              url: dd.realFile!,
                               aspectRatio:
-                                  (Get.width - 50.w) / (Get.height - 420.h),
+                                  (Get.width - 50) / (Get.height - 420),
                             ),
                             Positioned(
                               top: 10,
@@ -118,20 +113,21 @@ class _PreviewAssetPickedScreenState extends State<PreviewAssetPickedScreen> {
                                   setState(() {});
                                 },
                                 child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.transparent,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
                                     shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: Colors.black,
-                                      width: 3,
-                                    ),
                                   ),
                                   padding: const EdgeInsets.all(10),
-                                  child: const FaIcon(
-                                    FontAwesomeIcons.xmark,
-                                    color: Colors.black,
-                                    size: 20,
-                                  ),
+
+                                  child: const FaIcon(FontAwesomeIcons.xmark),
+
+                                  // child: CustomImageView(
+                                  //   imagePath: ImageConstant.crossCancel,
+                                  //   width: 15,
+                                  //   height: 15,
+                                  //   fit: BoxFit.contain,
+                                  //   color: Colors.black,
+                                  // ),
                                 ),
                               ),
                             ),

@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:photo_manager/photo_manager.dart';
+import 'package:photo_gallery/photo_gallery.dart';
 import 'package:video_thumbnail/video_thumbnail.dart' as thumba;
 
 import 'insta_image_picker_controller.dart';
@@ -48,7 +48,6 @@ class _CameraScreenState extends State<CameraScreen> {
     isRecording = false;
     final status = await Permission.camera.request();
     if (status != PermissionStatus.granted) {
-      // Handle permission denied
       return;
     }
 
@@ -76,7 +75,7 @@ class _CameraScreenState extends State<CameraScreen> {
       list.add(SetImageModal(
           realFile: File(image.path),
           thumbnailFile: null,
-          type: AssetType.image,
+          type: MediumType.image,
           cropperKey: GlobalKey(debugLabel: 'image')));
       Get.back(result: list);
     } catch (e) {
@@ -91,9 +90,6 @@ class _CameraScreenState extends State<CameraScreen> {
           (await getTemporaryDirectory()).path,
           '${DateTime.now()}.mp4',
         );
-
-        log('video path ==>>>${path}');
-        // Get.back(result: {"file": path, "type": 'video'});
 
         await controller!.startVideoRecording();
         setState(() {
@@ -134,29 +130,23 @@ class _CameraScreenState extends State<CameraScreen> {
       try {
         var videoPath = await controller!.stopVideoRecording();
 
-        setState(() {
-          isRecording = false;
-        });
+        log('thumbnailthumbnailthumbnail==>>${videoPath}');
         _timer?.cancel();
-        var thumbnail = await thumbnailFromVideo(File(videoPath.path));
         RxList<SetImageModal> list = <SetImageModal>[].obs;
 
         list.add(
           SetImageModal(
             realFile: File(videoPath.path),
-            thumbnailFile: thumbnail,
-            type: AssetType.video,
+            thumbnailFile: null,
+            type: MediumType.video,
             cropperKey: GlobalKey(debugLabel: 'video'),
           ),
         );
-
-        // widget.onComplete(list);
+        setState(() {
+          isRecording = false;
+        });
         Get.back(result: list);
-        // Get.to(
-        //   () => PreviewAssetPickedScreen(
-        //     preViewList: list,
-        //   ),
-        // );
+
         debugPrint('Recording stopped');
       } catch (e) {
         debugPrint('Error: $e');

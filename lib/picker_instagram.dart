@@ -1,16 +1,15 @@
 library picker_instagram;
 
 import 'package:get/get.dart';
-import 'package:photo_manager/photo_manager.dart';
 
-import 'video_image_picker/insta_image_picker_controller.dart';
-import 'video_image_picker/instagram_image_picker.dart';
+import 'constants/video_image_picker/insta_image_picker_controller.dart';
+import 'constants/video_image_picker/instagram_image_picker.dart';
 
 enum MainInsta { images, videos, both }
 
 class MainInstagram {
   static init() {
-    Get.put(InstagramImagePickerController(type: RequestType.common));
+    Get.put(InstagramImagePickerController());
   }
 
   static void instagramPicker(
@@ -22,14 +21,7 @@ class MainInstagram {
 
     Get.to(
       () => InstagramImagePickerView(
-        type: type == MainInsta.images
-            ? RequestType.image
-            : type == MainInsta.videos
-                ? RequestType.video
-                : type == MainInsta.both
-                    ? RequestType.common
-                    : RequestType.image,
-        onComplete: (List<SetImageModal>? value) {
+        onComplete: (value) {
           if (value == null) {
             onComplete(null);
           } else {
