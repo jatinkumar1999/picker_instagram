@@ -19,13 +19,12 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      // home: const ExampleScreen(),
+     
 
       home: ScreenUtilInit(
         designSize: const Size(360, 690),
         minTextAdapt: true,
         splitScreenMode: true,
-        // Use builder only if you need to use library outside ScreenUtilInit context
         builder: (_, child) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
