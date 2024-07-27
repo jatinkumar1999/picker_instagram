@@ -715,9 +715,11 @@ packages:
   picker_instagram:
     dependency: "direct main"
     description:
-      path: ".."
-      relative: true
-    source: path
+      path: "."
+      ref: jatin
+      resolved-ref: ae9db910606d2468c3e55ef23e43c5c092207bd9
+      url: "https://github.com/jatinkumar1999/picker_instagram.git"
+    source: git
     version: "0.0.1"
   platform:
     dependency: transitive

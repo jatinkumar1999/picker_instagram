@@ -120,12 +120,12 @@ Here are some screenshots of the example app demonstrating the key features of t
 
 ### Screenshot 1
 
-![Screenshot 1](assets/screenshot_01.png)
+<img src="assets/screenshot_01.png" alt="Home Screen" width="300"/>
 
 ### Screenshot 2
 
-![Screenshot 2](assets/screenshot_02.png)
+<img src="assets/screenshot_02.png" alt="Home Screen" width="300"/>
 
 ### Screenshot 3
 
-![Screenshot 3](assets/screenshot_03.png)
+<img src="assets/screenshot_03.png" alt="Home Screen" width="300"/>
