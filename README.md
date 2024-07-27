@@ -1,10 +1,8 @@
 picker_instagram
 
-
 Getting Started
 
 A Flutter package for picking images or the videos or both from the Gallery.
-
 
 Usage
 
@@ -25,16 +23,15 @@ picker_instagram: ^{latest version}
 
 2.  Add the following imports to your Dart code
 
-
 ```bash
 
 import 'package:picker_instagram/picker_instagram.dart';
 
 ```
 
-3. Simply Call this
+3. Usage Code
 
-````bash
+```bash
 import 'package:flutter/material.dart';
 import 'package:picker_instagram/constants/video_image_picker/preview_picked_assets_screen.dart';
 import 'package:picker_instagram/picker_instagram.dart';
@@ -74,12 +71,11 @@ class _ExampleScreenState extends State<ExampleScreen> {
     );
   }
 }
-
-
-
+```
 
 To use this package, ensure you have added the required permissions to your `AndroidManifest.xml` and `Info.plist` files as shown below:
 
+```bash
 #### Android
 
 xml
@@ -99,7 +95,9 @@ xml
  />
 </manifest>
 
+```
 
+```bash
 #### IOS
 
 <?xml version="1.0" encoding="UTF-8"?>
@@ -121,7 +119,7 @@ xml
 </plist>
 
 
-````
+```
 
 Screenshots
 
