@@ -30,7 +30,6 @@ picker_instagram: ^{latest version}
 
 import 'package:picker_instagram/picker_instagram.dart';
 
-
 ```
 
 3. Simply Call this:
