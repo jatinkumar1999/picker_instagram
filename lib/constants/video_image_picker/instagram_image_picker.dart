@@ -235,7 +235,7 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
                   widget.onComplete([]);
                 },
                 child: Container(
-                  color: Colors.transparent,
+                  color: Colors.red,
                   padding: const EdgeInsets.all(10),
                   child: const FaIcon(
                     FontAwesomeIcons.x,

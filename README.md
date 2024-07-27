@@ -82,7 +82,7 @@ To use this package, ensure you have added the required permissions to your `And
 
 #### Android
 
-```xml
+xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yourcompany.yourpackage">
 
