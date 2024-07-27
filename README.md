@@ -1,22 +1,42 @@
 picker_instagram
 
-A Flutter package for picking images or the videos from the Gallery.
+A Flutter package for picking images or the videos or both from the Gallery.
 
 Getting Started
 This plugin displays a gallery with user's Instagram Albums and Photos,
 
 Usage
 
-1. Simply Call this:
+1. Add dependency
 
-MainInstagram.instagramPicker(
-type: MainInsta.both,
-onComplete: (value) {
-//Here you will get the photos that you are selected in the picker
-// each one has the url
-Navigator.pop(context);
-},
-);
+Please check the latest version before installation. If there is any problem with the new version, please use the previous version
+
+dependencies:
+flutter:
+sdk: flutter
+
+# add picker_instagram
+
+picker_instagram: ^{latest version}
+
+2. Add the following imports to your Dart code
+
+import 'package:picker_instagram/picker_instagram.dart';
+
+3. Simply Call this:
+   PickerInstagram.instagramPicker(
+   type: PickerInsta.videos,
+   onComplete: (value) {
+   Get.back();
+   if ((value ?? []).isNotEmpty) {
+   Get.to(
+   () => PreviewAssetPickedScreen(
+   preViewList: value ?? [],
+   ),
+   );
+   }
+   },
+   );
 
 Screenshots
 
@@ -25,6 +45,5 @@ Screenshots
 ![Screenshot 2](assets/screenshot_02.png)
 
 ![Screenshot 3](assets/screenshot_03.png)
-
 
 Iicker Instagram:

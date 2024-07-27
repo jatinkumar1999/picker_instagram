@@ -12,8 +12,7 @@ import 'insta_image_picker_controller.dart';
 class PreviewAssetPickedScreen extends StatefulWidget {
   final List<SetImageModal>? preViewList;
   final List<Uint8List>? memoryImage;
-  const PreviewAssetPickedScreen({Key? key, this.preViewList, this.memoryImage})
-      : super(key: key);
+  const PreviewAssetPickedScreen({super.key, this.preViewList, this.memoryImage});
 
   @override
   State<PreviewAssetPickedScreen> createState() =>

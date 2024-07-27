@@ -7,13 +7,14 @@ import 'package:video_player/video_player.dart';
 class VideoPlayerItem extends StatefulWidget {
   final VideoPlayerController videoController;
   final double? aspectRatio;
-  VideoPlayerItem({required this.videoController, this.aspectRatio});
+  const VideoPlayerItem(
+      {super.key, required this.videoController, this.aspectRatio});
 
   @override
-  _VideoPlayerItemState createState() => _VideoPlayerItemState();
+  VideoPlayerItemState createState() => VideoPlayerItemState();
 }
 
-class _VideoPlayerItemState extends State<VideoPlayerItem> {
+class VideoPlayerItemState extends State<VideoPlayerItem> {
   // @override
   // void initState() {
   //   super.initState();
@@ -83,14 +84,15 @@ class VideoPlayerWithNetworkUrl extends StatefulWidget {
 
   final String? url;
   final bool? isPause;
-  VideoPlayerWithNetworkUrl({this.aspectRatio, this.url, this.isPause});
+  const VideoPlayerWithNetworkUrl(
+      {super.key, this.aspectRatio, this.url, this.isPause});
 
   @override
-  _VideoPlayerWithNetworkUrlState createState() =>
-      _VideoPlayerWithNetworkUrlState();
+  VideoPlayerWithNetworkUrlState createState() =>
+      VideoPlayerWithNetworkUrlState();
 }
 
-class _VideoPlayerWithNetworkUrlState extends State<VideoPlayerWithNetworkUrl>
+class VideoPlayerWithNetworkUrlState extends State<VideoPlayerWithNetworkUrl>
     with WidgetsBindingObserver {
   VideoPlayerController? videoController;
   @override
@@ -197,7 +199,8 @@ class VideoPlayerWithFileUrl extends StatefulWidget {
   final bool? isVideoAspect;
   final bool? isPause;
 
-  VideoPlayerWithFileUrl({
+  const VideoPlayerWithFileUrl({
+    super.key,
     this.aspectRatio,
     this.url,
     this.id,
@@ -206,10 +209,10 @@ class VideoPlayerWithFileUrl extends StatefulWidget {
   });
 
   @override
-  _VideoPlayerWithFileUrlState createState() => _VideoPlayerWithFileUrlState();
+  VideoPlayerWithFileUrlState createState() => VideoPlayerWithFileUrlState();
 }
 
-class _VideoPlayerWithFileUrlState extends State<VideoPlayerWithFileUrl> {
+class VideoPlayerWithFileUrlState extends State<VideoPlayerWithFileUrl> {
   VideoPlayerController? videoController;
   bool _isInitializing = false;
   @override
@@ -309,7 +312,8 @@ class VideoPlayerWithDetailFileUrl extends StatefulWidget {
   final bool? isNetwork;
   final String? id;
 
-  VideoPlayerWithDetailFileUrl({
+  const VideoPlayerWithDetailFileUrl({
+    super.key,
     this.aspectRatio,
     this.url,
     this.id,
@@ -320,11 +324,11 @@ class VideoPlayerWithDetailFileUrl extends StatefulWidget {
   });
 
   @override
-  _VideoPlayerWithDetailFileUrlState createState() =>
-      _VideoPlayerWithDetailFileUrlState();
+  VideoPlayerWithDetailFileUrlState createState() =>
+      VideoPlayerWithDetailFileUrlState();
 }
 
-class _VideoPlayerWithDetailFileUrlState
+class VideoPlayerWithDetailFileUrlState
     extends State<VideoPlayerWithDetailFileUrl> {
   VideoPlayerController? videoController;
   bool _isInitializing = false;
@@ -554,7 +558,7 @@ class _VideoPlayerWithDetailFileUrlState
                           color: Colors.white,
                         ),
                       ),
-                      SizedBox(width: 20),
+                      const SizedBox(width: 20),
                     ],
                   ),
                 )
@@ -572,7 +576,7 @@ class _VideoPlayerWithDetailFileUrlState
     return twoDigitHours == '00'
         ? "$twoDigitMinutes:$twoDigitSeconds"
         : (twoDigitHours == '00' && twoDigitMinutes == '00')
-            ? "$twoDigitSeconds"
-            : "${twoDigitHours}:$twoDigitMinutes:$twoDigitSeconds";
+            ? twoDigitSeconds
+            : "$twoDigitHours:$twoDigitMinutes:$twoDigitSeconds";
   }
 }

@@ -1,13 +1,11 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:path/path.dart' show join;
-import 'package:path_provider/path_provider.dart';
+
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_gallery/photo_gallery.dart';
 import 'package:video_thumbnail/video_thumbnail.dart' as thumba;
@@ -16,13 +14,13 @@ import 'insta_image_picker_controller.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   @override
-  _CameraScreenState createState() => _CameraScreenState();
+  CameraScreenState createState() => CameraScreenState();
 }
 
-class _CameraScreenState extends State<CameraScreen> {
+class CameraScreenState extends State<CameraScreen> {
   CameraController? controller;
   List<CameraDescription>? cameras;
   bool isRecording = false;
@@ -79,18 +77,13 @@ class _CameraScreenState extends State<CameraScreen> {
           cropperKey: GlobalKey(debugLabel: 'image')));
       Get.back(result: list);
     } catch (e) {
-      print('Error: $e');
+      debugPrint('Error: $e');
     }
   }
 
   Future<void> _startVideoRecording() async {
     if (!controller!.value.isRecordingVideo) {
       try {
-        final path = join(
-          (await getTemporaryDirectory()).path,
-          '${DateTime.now()}.mp4',
-        );
-
         await controller!.startVideoRecording();
         setState(() {
           isRecording = true;
@@ -130,7 +123,6 @@ class _CameraScreenState extends State<CameraScreen> {
       try {
         var videoPath = await controller!.stopVideoRecording();
 
-        log('thumbnailthumbnailthumbnail==>>${videoPath}');
         _timer?.cancel();
         RxList<SetImageModal> list = <SetImageModal>[].obs;
 
@@ -196,7 +188,7 @@ class _CameraScreenState extends State<CameraScreen> {
       body: SafeArea(
         child: Stack(
           children: [
-            Container(
+            SizedBox(
               width: Get.width,
               height: Get.height,
               child: CameraPreview(

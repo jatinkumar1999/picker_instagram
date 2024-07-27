@@ -13,14 +13,17 @@ import 'package:photo_gallery/photo_gallery.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
+import '../../picker_instagram.dart';
+
 class InstagramImagePickerController extends GetxController {
+  final PickerInsta? type;
+  InstagramImagePickerController({this.type = PickerInsta.both});
   RxList<SetImageModal> entities = <SetImageModal>[].obs;
   RxList<SetImageModal> finalList = <SetImageModal>[].obs;
   Rx<SetImageModal> oneFile =
       SetImageModal(cropperKey: GlobalKey(debugLabel: 'cropperKey')).obs;
   Rx<SetImageModal> oneFileSend =
       SetImageModal(cropperKey: GlobalKey(debugLabel: 'cropperKey')).obs;
-  ScrollController scrollController = ScrollController();
   RxInt page = 0.obs;
   RxBool isPaginateLoading = false.obs;
   RxBool isMultipleSelection = false.obs;
@@ -81,9 +84,9 @@ class InstagramImagePickerController extends GetxController {
       if (cacheDir.existsSync()) {
         cacheDir.deleteSync(recursive: true);
       }
-      print('Cache cleared successfully');
+      debugPrint('Cache cleared successfully');
     } catch (e) {
-      print('Error clearing cache: $e');
+      debugPrint('Error clearing cache: $e');
     }
   }
 
@@ -110,7 +113,6 @@ class InstagramImagePickerController extends GetxController {
     // );
     // oneFile.value = clickedData;
 
-    debugPrint('sdfsfffa==>>>${selectImagesIds}');
     selectedImages.refresh();
     finalList.refresh();
     oneFile.refresh();
@@ -143,28 +145,30 @@ class InstagramImagePickerController extends GetxController {
     if (await _promptPermissionSetting()) {
       List<Album> albums = await PhotoGallery.listAlbums(
         hideIfEmpty: true,
+        mediumType: ((type ?? PickerInsta.both) == PickerInsta.both)
+            ? null
+            : ((type ?? PickerInsta.both) == PickerInsta.images)
+                ? MediumType.image
+                : ((type ?? PickerInsta.both) == PickerInsta.videos)
+                    ? MediumType.video
+                    : null,
       );
-
-      debugPrint('all album==>>>${albums.first.name}');
 
       MediaPage mediaPage = await albums.first.listMedia(
         lightWeight: true,
       );
 
       media = mediaPage.items;
-      debugPrint('media.length.toString()');
-      debugPrint(media.length.toString());
 
       if (media.isNotEmpty) {
-        File _file = await PhotoGallery.getFile(
+        File file = await PhotoGallery.getFile(
           mediumId: media.first.id,
         );
         if (media.first.mediumType == MediumType.video) {
           oneFile.value = SetImageModal(
             id: media.first.id,
             type: media.first.mediumType,
-            realFile: _file,
-            // thumbnailFile: thumbnailFromVideoFile,
+            realFile: file,
             cropperKey: GlobalKey(debugLabel: media.first.id),
           );
 
@@ -175,7 +179,7 @@ class InstagramImagePickerController extends GetxController {
           oneFile.value = SetImageModal(
             id: media.first.id,
             type: media.first.mediumType,
-            realFile: _file,
+            realFile: file,
             thumbnailFile: null,
             cropperKey: GlobalKey(debugLabel: media.first.id),
           );
@@ -194,17 +198,16 @@ class InstagramImagePickerController extends GetxController {
   Future<bool> getFilesFromTheAssetsSingle() async {
     isNextLoading(true);
 
-    File _file =
+    File file =
         await PhotoGallery.getFile(mediumId: oneFileSend.value.id ?? "");
-    debugPrint('_file_file_file_file==>>$_file');
-    var type = lookupMimeType(_file.path);
+    var type = lookupMimeType(file.path);
     finalList.add(
       SetImageModal(
         id: oneFileSend.value.id,
         type: (type ?? '').contains('video/')
             ? MediumType.video
             : MediumType.image,
-        realFile: _file,
+        realFile: file,
         cropperKey: GlobalKey(debugLabel: oneFileSend.value.id ?? ''),
       ),
     );
@@ -221,16 +224,16 @@ class InstagramImagePickerController extends GetxController {
     for (var i = 0; i < selectImagesIds.length; i++) {
       var ids = selectImagesIds[i];
 
-      File _file = await PhotoGallery.getFile(mediumId: ids);
+      File file = await PhotoGallery.getFile(mediumId: ids);
 
-      var type = lookupMimeType(_file.path);
+      var type = lookupMimeType(file.path);
       finalList.add(
         SetImageModal(
           id: ids,
           type: (type ?? '').contains('video/')
               ? MediumType.video
               : MediumType.image,
-          realFile: _file,
+          realFile: file,
           cropperKey: GlobalKey(debugLabel: 'cropperKey'),
         ),
       );
@@ -241,8 +244,6 @@ class InstagramImagePickerController extends GetxController {
     } else {
       return false;
     }
-
-    isNextLoading(false);
   }
 
   void clearValues() {
@@ -265,16 +266,11 @@ class InstagramImagePickerController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-    scrollController.addListener(_scrollListener);
 
     await initAlbums();
   }
 
   void addCropAssets(File? file) {
-    print('contains==>>>${isMultipleSelection.value}');
-    bool isHaving =
-        selectedImages.any((element) => oneFile.value.id == element.id);
-
     bool isContains =
         finalList.any((element) => element.id == oneFile.value.id);
     if (isMultipleSelection.value == false) {
@@ -403,7 +399,6 @@ class InstagramImagePickerController extends GetxController {
         id: item.id,
         type: item.mediumType,
         realFile: file,
-        // thumbnailFile: thumnail,
         cropperKey: GlobalKey(debugLabel: item.id),
       );
       oneFileSend.value = SetImageModal(
@@ -452,23 +447,6 @@ class InstagramImagePickerController extends GetxController {
 
     addCropAssets(file);
     isCropImage.value = false;
-  }
-
-  //TODO:handle Pagination
-  Future<void> _scrollListener() async {
-    // if (scrollController.position.pixels >=
-    //     scrollController.position.maxScrollExtent) {
-    //   isPaginateLoading.value = true;
-    //   isGettingPaginationData.value = true;
-    //   page.value++;
-    //
-    //   isGettingPaginationData.value
-    //       ? await getAsset(true, isInit: false)
-    //       : null;
-    //   // await getNotificationApi(isPaginate: true, page: page.value);
-    //   isGettingPaginationData.value = false;
-    //   isPaginateLoading.value = false;
-    // }
   }
 
   Future<File> saveImage(Uint8List imageBytes, {File? file}) async {

@@ -5,15 +5,11 @@ import 'package:get/get.dart';
 import 'constants/video_image_picker/insta_image_picker_controller.dart';
 import 'constants/video_image_picker/instagram_image_picker.dart';
 
-enum MainInsta { images, videos, both }
+enum PickerInsta { images, videos, both }
 
-class MainInstagram {
-  static init() {
-    Get.put(InstagramImagePickerController());
-  }
-
+class PickerInstagram {
   static void instagramPicker(
-      {MainInsta? type,
+      {PickerInsta? type,
       required dynamic Function(List<SetImageModal>?) onComplete}) {
     if (GetInstance().isRegistered<InstagramImagePickerController>()) {
       Get.delete<InstagramImagePickerController>();
@@ -21,6 +17,7 @@ class MainInstagram {
 
     Get.to(
       () => InstagramImagePickerView(
+        type: type,
         onComplete: (value) {
           if (value == null) {
             onComplete(null);

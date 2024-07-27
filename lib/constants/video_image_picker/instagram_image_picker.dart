@@ -1,9 +1,6 @@
-import 'dart:developer';
 import 'dart:io';
 
-import 'package:cropperx/cropperx.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,15 +10,19 @@ import 'package:transparent_image/transparent_image.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';
 
-import '../shimmer/common_shimmer.dart';
-import 'camera_image_video_picker.dart';
-import 'commmon_video_player.dart';
+import '../../picker_instagram.dart';
+
 import 'insta_image_picker_controller.dart';
+import 'widgets/camera_and_multi_select_view.dart';
+import 'widgets/grid_top_view.dart';
+import 'widgets/shimmer_screen.dart';
 
 class InstagramImagePickerView extends StatefulWidget {
+  final PickerInsta? type;
   final Function(List<SetImageModal>?) onComplete;
 
-  const InstagramImagePickerView({super.key, required this.onComplete});
+  const InstagramImagePickerView(
+      {super.key, required this.onComplete, this.type});
 
   @override
   State<InstagramImagePickerView> createState() =>
@@ -45,7 +46,6 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
     _videoPlayerController?.removeListener(() {});
     _videoPlayerController?.dispose();
     _videoPlayerController = null;
-    // _videoPlayerController?.removeListener(() {});
 
     setState(() {});
   }
@@ -67,7 +67,6 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
 
       await VideoCompress.getMediaInfo(outputPath).then((rc) async {
         if (rc.filesize == 0) {
-          print('Transcoding completed successfully');
           final int fileSize = await dataFile.length();
           if (fileSize > 2 * 1024 * 1024) {
             MediaInfo? mediaInfo = await VideoCompress.compressVideo(
@@ -110,11 +109,11 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
             setState(() {});
           }
         } else {
-          print('Transcoding failed with return code $rc');
+          debugPrint('Transcoding failed with return code $rc');
         }
       });
     } catch (e) {
-      print('Error during transcoding: $e');
+      debugPrint('Error during transcoding: $e');
     }
   }
 
@@ -124,9 +123,9 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
       if (cacheDir.existsSync()) {
         cacheDir.deleteSync(recursive: true);
       }
-      print('Cache cleared successfully');
+      debugPrint('Cache cleared successfully');
     } catch (e) {
-      print('Error clearing cache: $e');
+      debugPrint('Error clearing cache: $e');
     }
   }
 
@@ -155,8 +154,6 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
     setState(() {});
 
     var file = await video.getFile();
-    bool isCamera = _isCameraVideo(file);
-    log('isCamera is Camera==>>>${file}');
 
     final int fileSize = await file.length();
     if (fileSize > 2 * 1024 * 1024) {
@@ -194,12 +191,10 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
           setState(() {});
           Get.back();
         })
-        ..setLooping(true)
-            // ..play()
-            .catchError((e) {
+        ..setLooping(true).catchError((e) {
           _transcodeVideo(file.path);
         });
-      ;
+
       isVideoLoading = false;
       setState(() {});
     }
@@ -208,8 +203,8 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
     return _videoPlayerController;
   }
 
-  bool _isCameraVideo(File medium) {
-    return (medium.path ?? '').toLowerCase().contains('camera');
+  bool isCameraVideo(File medium) {
+    return (medium.path).toLowerCase().contains('camera');
   }
 
   @override
@@ -222,7 +217,9 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder(
-      init: InstagramImagePickerController(),
+      init: InstagramImagePickerController(
+        type: widget.type,
+      ),
       builder: (controller) {
         return Obx(
           () => Scaffold(
@@ -254,12 +251,6 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
                   fontWeight: FontWeight.w700,
                   fontSize: 25,
                 ),
-
-                // TextStyle(
-                //   color: Colors.white,
-                //   fontWeight: FontWeight.w700,
-                //   fontSize: 25,
-                // ),
               ),
               actions: [
                 controller.isCropImage.value
@@ -271,20 +262,17 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
                           setState(() {});
 
                           if (isTapped) {
-                            log('final list==>>>${controller.finalList.value}');
-
                             if (controller.isMultipleSelection.value == false) {
                               controller.finalList.clear();
                               if (controller.oneFileSend.value.id != null) {
-                                File _file = await PhotoGallery.getFile(
+                                File file = await PhotoGallery.getFile(
                                     mediumId:
                                         controller.oneFileSend.value.id ?? "");
-                                debugPrint('_file_file_file_file==>>$_file');
                                 controller.finalList.add(
                                   SetImageModal(
                                     id: controller.oneFileSend.value.id,
                                     type: controller.oneFileSend.value.type,
-                                    realFile: _file,
+                                    realFile: file,
                                     cropperKey: GlobalKey(
                                         debugLabel:
                                             controller.oneFileSend.value.id ??
@@ -292,21 +280,11 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
                                   ),
                                 );
 
-                                // controller.selectedImages
-                                //     .add(controller.oneFileSend.value);
-                                // controller.finalList.clear();
-                                // controller.finalList
-                                //     .add(controller.oneFileSend.value);
-                                debugPrint(
-                                    'finalListfinalList==>>>${controller.finalList.value.first.realFile}');
-                                debugPrint(
-                                    'realFile==>>>${controller.oneFileSend.value.realFile}');
                                 controller.oneFileSend.value.realFile != null
-                                    ? widget
-                                        .onComplete(controller.finalList.value)
+                                    ? widget.onComplete(controller.finalList)
                                     : controller.oneFileSend.value.id != null
-                                        ? widget.onComplete(
-                                            controller.finalList.value)
+                                        ? widget
+                                            .onComplete(controller.finalList)
                                         : widget.onComplete([]);
                               } else {
                                 widget.onComplete([]);
@@ -318,10 +296,8 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
                                 bool isDone =
                                     await controller.getFilesFromTheAssets();
 
-                                debugPrint(
-                                    'sadsa==>>${controller.finalList.length}');
                                 if (isDone) {
-                                  widget.onComplete(controller.finalList.value);
+                                  widget.onComplete(controller.finalList);
                                 }
                               } else {
                                 widget.onComplete([]);
@@ -329,13 +305,6 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
                             }
                             disposeFuntion();
                             controller.removeVideoController();
-                            // Get.to(
-                            //   () => PreviewAssetPickedScreen(
-                            //     // memoryImage: images,
-                            //
-                            //     preViewList: controller.finalList.value,
-                            //   ),
-                            // );
                           }
                         },
                         child: Text(
@@ -345,11 +314,6 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
                             fontWeight: FontWeight.w500,
                             color: Colors.blue,
                           ),
-                          // TextStyle(
-                          //   color: Colors.blue,
-                          //   fontSize: 20,
-                          //   fontWeight: FontWeight.w500,
-                          // ),
                         ),
                       ),
               ],
@@ -399,7 +363,7 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
                                         });
                                       },
                                 onLongPress: () async {
-                                  File _file = await PhotoGallery.getFile(
+                                  File file = await PhotoGallery.getFile(
                                       mediumId: data.id);
 
                                   if (!controller.isMultipleSelection.value) {
@@ -410,7 +374,7 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
                                     );
                                     controller.onFileOnTap(
                                       data,
-                                      file: _file,
+                                      file: file,
                                       build: () {
                                         build(context);
                                         controller.update();
@@ -425,7 +389,7 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
                                   } else {
                                     controller.onFileOnTap(
                                       data,
-                                      file: _file,
+                                      file: file,
                                       build: () {
                                         build(context);
                                         controller.update();
@@ -484,12 +448,12 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
                                                   removeVideoControllerListener();
                                                 }
 
-                                                File _file =
+                                                File file =
                                                     await PhotoGallery.getFile(
                                                         mediumId: data.id);
                                                 controller.onFileOnTap(
                                                   data,
-                                                  file: _file,
+                                                  file: file,
                                                   build: () {
                                                     build(context);
                                                     controller.update();
@@ -509,24 +473,10 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
                                                           .solidSquareCheck,
                                                       size: 20,
                                                     )
-                                                  // CustomImageView(
-                                                  //     imagePath: ImageConstant
-                                                  //         .checkInstagramImage,
-                                                  //     width: 20,
-                                                  //     height: 20,
-                                                  //     fit: BoxFit.cover,
-                                                  //   )
                                                   : const FaIcon(
                                                       FontAwesomeIcons.square,
                                                       size: 20,
                                                     ),
-                                              // CustomImageView(
-                                              //     imagePath: ImageConstant
-                                              //         .unCheckInstagramImage,
-                                              //     width: 20,
-                                              //     height: 20,
-                                              //     fit: BoxFit.cover,
-                                              //   ),
                                             ),
                                           )
                                         : const SizedBox(),
@@ -561,435 +511,5 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
         );
       },
     );
-  }
-}
-
-class GridTopView extends StatefulWidget {
-  final InstagramImagePickerController controller;
-  final bool isVideoLoading;
-  final VideoPlayerController? videoPlayerController;
-  const GridTopView({
-    super.key,
-    required this.controller,
-    this.videoPlayerController,
-    required this.isVideoLoading,
-  });
-
-  @override
-  State<GridTopView> createState() => _GridTopViewState();
-}
-
-class _GridTopViewState extends State<GridTopView> {
-  @override
-  Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          widget.controller.isCropImage.value
-              ? const LinearProgressIndicator(
-                  color: Colors.blue,
-                )
-              : const SizedBox(),
-          Stack(
-            children: [
-              Container(
-                width: Get.width,
-                height: 380,
-                color: Colors.black,
-                alignment: Alignment.center,
-                child: Column(
-                  children: [
-                    Obx(
-                      () => widget.controller.oneFile.value.id == null
-                          ? const SizedBox()
-                          : widget.controller.oneFile.value.type ==
-                                  MediumType.image
-                              ? widget.controller.oneFile.value.realFile == null
-                                  ? const SizedBox()
-                                  : SizedBox(
-                                      width: Get.width,
-                                      height: 380,
-                                      child: Cropper(
-                                        cropperKey: widget.controller.oneFile
-                                            .value.cropperKey,
-                                        gridLineThickness: 1,
-                                        overlayType: OverlayType.grid,
-                                        overlayColor: Colors.black45,
-                                        onScaleEnd: (details) async {
-                                          widget.controller
-                                              .saveAssetAfterCrop();
-                                        },
-                                        image: Image.file(
-                                          widget.controller.oneFile.value
-                                              .realFile!,
-                                          fit: BoxFit.cover,
-                                          width: widget.controller
-                                                  .isFullAspectRatio.value
-                                              ? Get.width
-                                              : Get.width * 0.65,
-                                          height: 380,
-                                        ),
-                                      ),
-                                    )
-                              : widget.isVideoLoading == true
-                                  ? const SizedBox()
-                                  : Container(
-                                      width: Get.width,
-                                      height: 380,
-                                      color: Colors.black,
-                                      child: widget.videoPlayerController !=
-                                                  null &&
-                                              !widget.videoPlayerController!
-                                                  .value.isInitialized
-                                          ? const SizedBox()
-                                          : widget.videoPlayerController ==
-                                                      null &&
-                                                  widget.controller.oneFile
-                                                          .value.realFile !=
-                                                      null
-                                              ? VideoPlayerWithFileUrl(
-                                                  url: widget.controller.oneFile
-                                                      .value.realFile,
-                                                  isVideoAspect: true,
-                                                )
-                                              : Stack(
-                                                  alignment: Alignment.center,
-                                                  children: [
-                                                    widget
-                                                                .videoPlayerController
-                                                                ?.value
-                                                                .isInitialized ==
-                                                            true
-                                                        ? AspectRatio(
-                                                            // aspectRatio:
-                                                            //     videoPlayerController!
-                                                            //         .value
-                                                            //         .aspectRatio,
-                                                            aspectRatio: widget
-                                                                .videoPlayerController!
-                                                                .value
-                                                                .aspectRatio,
-                                                            // (Get
-                                                            //         .width) /
-                                                            //     (Get.height -
-                                                            //         100.h),
-
-                                                            child: VideoPlayer(
-                                                                widget
-                                                                    .videoPlayerController!),
-                                                          )
-                                                        : const SizedBox(),
-                                                    widget
-                                                                .videoPlayerController
-                                                                ?.value
-                                                                .isInitialized ==
-                                                            true
-                                                        ? Align(
-                                                            alignment: Alignment
-                                                                .center,
-                                                            child:
-                                                                GestureDetector(
-                                                              onTap: () {
-                                                                widget
-                                                                        .videoPlayerController!
-                                                                        .value
-                                                                        .isPlaying
-                                                                    ? widget
-                                                                        .videoPlayerController!
-                                                                        .pause()
-                                                                    : widget
-                                                                        .videoPlayerController!
-                                                                        .play();
-                                                                setState(() {});
-                                                              },
-                                                              child: Container(
-                                                                width: 45,
-                                                                height: 45,
-                                                                decoration:
-                                                                    const BoxDecoration(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  shape: BoxShape
-                                                                      .circle,
-                                                                ),
-                                                                child: widget
-                                                                        .videoPlayerController!
-                                                                        .value
-                                                                        .isPlaying
-                                                                    ? const Icon(
-                                                                        Icons
-                                                                            .pause)
-                                                                    : const Icon(
-                                                                        Icons
-                                                                            .play_arrow_sharp),
-                                                              ),
-                                                            ),
-                                                          )
-                                                        : const SizedBox(),
-                                                  ],
-                                                )),
-                    ),
-                  ],
-                ),
-              ),
-              // widget.controller.oneFile.value.type == MediumType.image
-              //     ? Positioned(
-              //         bottom: 15,
-              //         left: 10,
-              //         child: GestureDetector(
-              //           onTap: () async {
-              //             widget.controller.setAspectRatio();
-              //           },
-              //           child: Stack(
-              //             clipBehavior: Clip.none,
-              //             children: [
-              //               Container(
-              //                 width: 40,
-              //                 height: 40,
-              //                 decoration: BoxDecoration(
-              //                   color: Colors.black.withOpacity(0.45),
-              //                   shape: BoxShape.circle,
-              //                 ),
-              //               ),
-              //               Positioned(
-              //                 top: 8,
-              //                 right: 8,
-              //                 child: CustomImageView(
-              //                   imagePath: ImageConstant.rightTopAngleArrow,
-              //                   width: 14,
-              //                   height: 14,
-              //                   fit: BoxFit.contain,
-              //                 ),
-              //               ),
-              //               Positioned(
-              //                 bottom: 8,
-              //                 left: 8,
-              //                 child: CustomImageView(
-              //                   imagePath: ImageConstant.rightBottomAngleArrow,
-              //                   width: 14,
-              //                   height: 14,
-              //                   fit: BoxFit.contain,
-              //                 ),
-              //               ),
-              //             ],
-              //           ),
-              //         ),
-              //       )
-              //     : const SizedBox(),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class CameraAndMultipleSelectionView extends StatelessWidget {
-  final InstagramImagePickerController controller;
-  final Function(List<SetImageModal>?) onComplete;
-
-  final Function? removeVideoListener;
-  const CameraAndMultipleSelectionView(
-      {super.key,
-      required this.controller,
-      required this.onComplete,
-      this.removeVideoListener});
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverPersistentHeader(
-      pinned: true,
-      delegate: CustomHeaderDelegate(
-        minHeight: 80.0,
-        maxHeight: 80.0,
-        child: Container(
-          height: 80.0,
-          color: Colors.black,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  controller.setMultipleSelection(false);
-                },
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 500),
-                  height: 35,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    // vertical: 5,
-                  ),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(60),
-                    color: controller.isMultipleSelection.value
-                        ? Colors.blue
-                        : const Color(0xff1E1E1E),
-                  ),
-                  child: Text(
-                    'SELECT MULTIPLE',
-                    style: GoogleFonts.laila(
-                      fontSize: 11,
-                      color: Colors.white,
-                      fontWeight: controller.isMultipleSelection.value
-                          ? FontWeight.w600
-                          : FontWeight.w500,
-                    ),
-
-                    //  TextStyle(
-                    //   // fontFamily: AssetFonts.inter,
-                    //   fontSize: 9,
-                    //   color: Colors.white,
-                    // ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              GestureDetector(
-                onTap: !controller.isMultipleSelection.value
-                    ? () {
-                        if (removeVideoListener != null) {
-                          removeVideoListener!();
-                        }
-                        controller.removeVideoController();
-
-                        Get.to(
-                          () => const CameraScreen(),
-                        )?.then((value) {
-                          if (value != null) {
-                            onComplete(value);
-                          }
-                        });
-                      }
-                    : () {},
-                child: Container(
-                  width: 35,
-                  height: 35,
-                  padding: const EdgeInsets.all(5),
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xff1E1E1E),
-                  ),
-
-                  child: Center(
-                    child: FaIcon(
-                      FontAwesomeIcons.camera,
-                      color: !controller.isMultipleSelection.value
-                          ? Colors.white
-                          : Colors.grey.withOpacity(0.45),
-                      size: 20,
-                    ),
-                  ),
-                  // child: CustomImageView(
-                  //   imagePath: ImageConstant.instagramCamera,
-                  //   color: !controller.isMultipleSelection.value
-                  //       ? Colors.white
-                  //       : Colors.grey.withOpacity(0.45),
-                  // ),
-                ),
-              ),
-              const SizedBox(width: 20),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class ShimmerScreen extends StatelessWidget {
-  const ShimmerScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        child: Column(
-      children: [
-        CommonShimmerScreen(
-          width: Get.width,
-          height: 480,
-          radius: 0,
-        ),
-        const SizedBox(height: 4),
-        AlignedGridView.count(
-          crossAxisCount: 4,
-          mainAxisSpacing: 4,
-          crossAxisSpacing: 4,
-          shrinkWrap: true,
-          primary: false,
-          itemCount: 20,
-          itemBuilder: (context, index) {
-            return const CommonShimmerScreen(
-              width: 100.0,
-              height: 100.0,
-            );
-          },
-        ),
-      ],
-    ));
-  }
-}
-
-class TopImagePreview extends StatefulWidget {
-  final String fileId;
-  final File? file;
-  final InstagramImagePickerController controller;
-  const TopImagePreview({
-    super.key,
-    required this.fileId,
-    required this.controller,
-    this.file,
-  });
-
-  @override
-  State<TopImagePreview> createState() => _TopImagePreviewState();
-}
-
-class _TopImagePreviewState extends State<TopImagePreview> {
-  @override
-  Widget build(BuildContext context) {
-    debugPrint('sadadad=>>>${widget.file}');
-    return widget.file == null
-        ? CommonShimmerScreen(
-            width: Get.width,
-            height: 380,
-          )
-        : Cropper(
-            cropperKey: widget.controller.oneFile.value.cropperKey,
-            gridLineThickness: 1,
-            overlayType: OverlayType.grid,
-            overlayColor: Colors.black45,
-            onScaleEnd: (details) async {
-              widget.controller.saveAssetAfterCrop();
-            },
-            image: Image.file(
-              widget.file!,
-              frameBuilder: (BuildContext context, Widget child, int? frame,
-                  bool wasSynchronouslyLoaded) {
-                if (wasSynchronouslyLoaded) {
-                  return child;
-                }
-                if (frame == null) {
-                  return CommonShimmerScreen(
-                    width: Get.width,
-                    height: 380,
-                  );
-                }
-                return child;
-              },
-              errorBuilder:
-                  (BuildContext context, Object error, StackTrace? stackTrace) {
-                return const Icon(
-                  Icons.error,
-                );
-              },
-              fit: BoxFit.cover,
-              width: widget.controller.isFullAspectRatio.value
-                  ? Get.width
-                  : Get.width * 0.65,
-              height: 0,
-            ),
-          );
   }
 }
