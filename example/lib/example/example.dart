@@ -18,6 +18,7 @@ class _ExampleScreenState extends State<ExampleScreen> {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
+            
             PickerInstagram.instagramPicker(
               type: PickerInsta.both,
               onComplete: (value) {
