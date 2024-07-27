@@ -25,40 +25,9 @@ import 'package:picker_instagram/picker_instagram.dart';
 
 3. Simply Call this:
 
-class ExampleScreen extends StatefulWidget {
-const ExampleScreen({super.key});
+ ```bash
+    cd e
 
-@override
-State<ExampleScreen> createState() => \_ExampleScreenState();
-}
-
-class \_ExampleScreenState extends State<ExampleScreen> {
-@override
-Widget build(BuildContext context) {
-return Scaffold(
-body: Center(
-child: ElevatedButton(
-onPressed: () {
-PickerInstagram.instagramPicker(
-type: PickerInsta.both,
-onComplete: (value) {
-Get.back();
-if ((value ?? []).isNotEmpty) {
-Get.to(
-() => PreviewAssetPickedScreen(
-preViewList: value ?? [],
-),
-);
-}
-},
-);
-},
-child: const Text('pick images'),
-),
-),
-);
-}
-}
 
 To use this package, ensure you have added the required permissions to your `AndroidManifest.xml` and `Info.plist` files as shown below:
 
