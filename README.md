@@ -15,6 +15,7 @@ Please check the latest version before installation. If there is any problem wit
 dependencies:
 flutter:
 sdk: flutter
+
 # add picker_instagram
 
 picker_instagram: ^{latest version}

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:picker_instagram/constants/video_image_picker/preview_picked_assets_screen.dart';
-import 'package:picker_instagram/picker_instagram.dart';
+// import 'package:picker_instagram/picker_instagram.dart';
 import 'package:get/get.dart';
+import 'package:picker_instagram/picker_instagram.dart';
 
 class ExampleScreen extends StatefulWidget {
   const ExampleScreen({super.key});
