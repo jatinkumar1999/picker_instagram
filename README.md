@@ -11,13 +11,17 @@ Usage
 
 Please check the latest version before installation. If there is any problem with the new version, please use the previous version
 
+````bash
 dependencies:
 flutter:
 sdk: flutter
-
 # add picker_instagram
 
 picker_instagram: ^{latest version}
+
+````
+
+
 
 2.  Add the following imports to your Dart code
 
