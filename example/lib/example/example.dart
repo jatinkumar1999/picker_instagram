@@ -18,7 +18,7 @@ class _ExampleScreenState extends State<ExampleScreen> {
         child: ElevatedButton(
           onPressed: () {
             PickerInstagram.instagramPicker(
-              type: PickerInsta.videos,
+              type: PickerInsta.both,
               onComplete: (value) {
                 Get.back();
                 if ((value ?? []).isNotEmpty) {
