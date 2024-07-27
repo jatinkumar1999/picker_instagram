@@ -25,9 +25,10 @@ import 'package:picker_instagram/picker_instagram.dart';
 
 3. Simply Call this:
 
- ```bash
-    cd e
-
+```bash
+    cd example
+    ```
+    
 
 To use this package, ensure you have added the required permissions to your `AndroidManifest.xml` and `Info.plist` files as shown below:
 
