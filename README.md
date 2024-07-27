@@ -106,14 +106,10 @@ To use this package, ensure you have added the required permissions to your `And
 <key>NSPhotoLibraryUsageDescription</key>
 <string>We need access to your photo library to select and upload photos.</string>
 <key>NSPhotoLibraryAddUsageDescription</key>
-   <string>We need access to save photos to your photo library.</string>
+<string>We need access to save photos to your photo library.</string>
 
 </dict>
 </plist>
-
-
-
-
 
 
 ````
