@@ -20,15 +20,16 @@ class ShimmerScreen extends StatelessWidget {
         const SizedBox(height: 4),
         AlignedGridView.count(
           crossAxisCount: 4,
-          mainAxisSpacing: 4,
-          crossAxisSpacing: 4,
+          mainAxisSpacing: 4.0,
+          crossAxisSpacing: 4.0,
           shrinkWrap: true,
           primary: false,
           itemCount: 20,
           itemBuilder: (context, index) {
             return const CommonShimmerScreen(
               width: 100.0,
-              height: 100.0,
+              height: 90.0,
+              radius: 0,
             );
           },
         ),
