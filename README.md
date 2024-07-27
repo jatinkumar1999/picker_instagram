@@ -118,11 +118,18 @@ To use this package, ensure you have added the required permissions to your `And
 
 ````
 
-
 Screenshots
 
-[Screenshot 1](assets/screenshot_01.png)
+Here are some screenshots of the example app demonstrating the key features of this package:
 
-[Screenshot 2](assets/screenshot_02.png)
+### Screenshot 1
 
-[Screenshot 3](assets/screenshot_03.png)
+![Screenshot 1](assets/screenshot_01.png)
+
+### Screenshot 2
+
+![Screenshot 2](assets/screenshot_02.png)
+
+### Screenshot 3
+
+![Screenshot 3](assets/screenshot_03.png)
