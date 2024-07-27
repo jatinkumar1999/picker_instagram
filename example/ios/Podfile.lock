@@ -24,41 +24,49 @@ PODS:
   - Mantle (2.2.0):
     - Mantle/extobjc (= 2.2.0)
   - Mantle/extobjc (2.2.0)
+  - package_info_plus (0.4.5):
+    - Flutter
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
   - permission_handler_apple (9.3.0):
     - Flutter
-  - photo_manager (2.0.0):
+  - photo_gallery (0.0.1):
     - Flutter
-    - FlutterMacOS
-  - SDWebImage (5.18.10):
-    - SDWebImage/Core (= 5.18.10)
-  - SDWebImage/Core (5.18.10)
+  - SDWebImage (5.19.4):
+    - SDWebImage/Core (= 5.19.4)
+  - SDWebImage/Core (5.19.4)
   - SDWebImageWebPCoder (0.14.6):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.17)
   - sqflite (0.0.3):
     - Flutter
     - FlutterMacOS
+  - video_compress (0.3.0):
+    - Flutter
   - video_player_avfoundation (0.0.1):
     - Flutter
     - FlutterMacOS
   - video_thumbnail (0.0.1):
     - Flutter
     - libwebp
+  - wakelock_plus (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - camera_avfoundation (from `.symlinks/plugins/camera_avfoundation/ios`)
   - Flutter (from `Flutter`)
   - flutter_image_compress_common (from `.symlinks/plugins/flutter_image_compress_common/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
-  - photo_manager (from `.symlinks/plugins/photo_manager/ios`)
+  - photo_gallery (from `.symlinks/plugins/photo_gallery/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/darwin`)
+  - video_compress (from `.symlinks/plugins/video_compress/ios`)
   - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/darwin`)
   - video_thumbnail (from `.symlinks/plugins/video_thumbnail/ios`)
+  - wakelock_plus (from `.symlinks/plugins/wakelock_plus/ios`)
 
 SPEC REPOS:
   trunk:
@@ -76,18 +84,24 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_image_compress_common/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
+  package_info_plus:
+    :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
   permission_handler_apple:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
-  photo_manager:
-    :path: ".symlinks/plugins/photo_manager/ios"
+  photo_gallery:
+    :path: ".symlinks/plugins/photo_gallery/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/darwin"
+  video_compress:
+    :path: ".symlinks/plugins/video_compress/ios"
   video_player_avfoundation:
     :path: ".symlinks/plugins/video_player_avfoundation/darwin"
   video_thumbnail:
     :path: ".symlinks/plugins/video_thumbnail/ios"
+  wakelock_plus:
+    :path: ".symlinks/plugins/wakelock_plus/ios"
 
 SPEC CHECKSUMS:
   camera_avfoundation: 759172d1a77ae7be0de08fc104cfb79738b8a59e
@@ -96,14 +110,17 @@ SPEC CHECKSUMS:
   image_picker_ios: c560581cceedb403a6ff17f2f816d7fea1421fc1
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
   Mantle: c5aa8794a29a022dfbbfc9799af95f477a69b62d
+  package_info_plus: 58f0028419748fad15bf008b270aaa8e54380b1c
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   permission_handler_apple: 9878588469a2b0d0fc1e048d9f43605f92e6cec2
-  photo_manager: ff695c7a1dd5bc379974953a2b5c0a293f7c4c8a
-  SDWebImage: fc8f2d48bbfd72ef39d70e981bd24a3f3be53fec
+  photo_gallery: 9f95e57747cd22c10676ece3660d1ffe6c603ee5
+  SDWebImage: 066c47b573f408f18caa467d71deace7c0f8280d
   SDWebImageWebPCoder: e38c0a70396191361d60c092933e22c20d5b1380
   sqflite: 673a0e54cc04b7d6dba8d24fb8095b31c3a99eec
+  video_compress: fce97e4fb1dfd88175aa07d2ffc8a2f297f87fbe
   video_player_avfoundation: 7c6c11d8470e1675df7397027218274b6d2360b3
   video_thumbnail: c4e2a3c539e247d4de13cd545344fd2d26ffafd1
+  wakelock_plus: 78ec7c5b202cab7761af8e2b2b3d0671be6c4ae1
 
 PODFILE CHECKSUM: 3a05b6112ff6b67415b7ba4835f09648af88420d
 
