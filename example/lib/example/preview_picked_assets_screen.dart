@@ -1,13 +1,13 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:example/example/videwo_player_with_file.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:photo_gallery/photo_gallery.dart';
+import 'package:picker_instagram/constants/video_image_picker/insta_image_picker_controller.dart';
 
-import 'commmon_video_player.dart';
-import 'insta_image_picker_controller.dart';
 
 class PreviewAssetPickedScreen extends StatefulWidget {
   final List<SetImageModal>? preViewList;

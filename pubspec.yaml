@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cached_video_player_plus: ^2.0.0
+  
   video_thumbnail: ^0.5.3
   camera: ^0.10.5+9
   path: ^1.8.3
@@ -28,7 +28,6 @@ dependencies:
   photo_gallery: ^2.2.1
   transparent_image: ^2.0.1
   video_player: ^2.8.5
-  chewie: ^1.7.5
   video_compress: ^3.1.2
   google_fonts: ^6.2.1
   mime: ^1.0.5
