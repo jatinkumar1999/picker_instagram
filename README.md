@@ -1,6 +1,6 @@
-picker_instagram
+## picker_instagram
 
-Getting Started
+## Getting Started
 
 A Flutter package for picking images or the videos or both from the Gallery.
 
@@ -33,9 +33,11 @@ import 'package:picker_instagram/picker_instagram.dart';
 
 ```bash
 import 'package:flutter/material.dart';
-import 'package:picker_instagram/constants/video_image_picker/preview_picked_assets_screen.dart';
-import 'package:picker_instagram/picker_instagram.dart';
+// import 'package:picker_instagram/picker_instagram.dart';
 import 'package:get/get.dart';
+import 'package:picker_instagram/picker_instagram.dart';
+
+import 'preview_picked_assets_screen.dart';
 
 class ExampleScreen extends StatefulWidget {
   const ExampleScreen({super.key});
@@ -52,10 +54,10 @@ class _ExampleScreenState extends State<ExampleScreen> {
         child: ElevatedButton(
           onPressed: () {
             PickerInstagram.instagramPicker(
+              context,
               type: PickerInsta.both,
               onComplete: (value) {
                 if ((value ?? []).isNotEmpty) {
-                 // Here add your after assets selected asset logic.
                   Get.to(
                     () => PreviewAssetPickedScreen(
                       preViewList: value ?? [],
@@ -71,6 +73,7 @@ class _ExampleScreenState extends State<ExampleScreen> {
     );
   }
 }
+
 ```
 
 To use this package, ensure you have added the required permissions to your `AndroidManifest.xml` and `Info.plist` files as shown below:
