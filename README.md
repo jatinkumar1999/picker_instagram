@@ -33,7 +33,6 @@ import 'package:picker_instagram/picker_instagram.dart';
 
 ```bash
 import 'package:flutter/material.dart';
-// import 'package:picker_instagram/picker_instagram.dart';
 import 'package:get/get.dart';
 import 'package:picker_instagram/picker_instagram.dart';
 
