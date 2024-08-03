@@ -14,7 +14,6 @@ import 'insta_image_picker_controller.dart';
 import 'widgets/camera_and_multi_select_view.dart';
 import 'widgets/grid_top_view.dart';
 import 'widgets/shimmer_screen.dart';
-import 'dart:developer' as dev;
 
 class InstagramImagePickerView extends StatefulWidget {
   final PickerInsta? type;
