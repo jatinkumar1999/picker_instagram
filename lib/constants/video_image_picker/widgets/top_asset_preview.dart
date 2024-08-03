@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:cropperx/cropperx.dart';
 import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
 
 import '../../shimmer/common_shimmer.dart';
 import '../insta_image_picker_controller.dart';
