@@ -6,7 +6,7 @@ A Flutter package for picking images or the videos or both from the Gallery.
 
 Usage
 
-1. Add dependency
+1. ## Add dependency
 
 Please check the latest version before installation. If there is any problem with the new version, please use the previous version
 
@@ -21,7 +21,7 @@ picker_instagram: ^{latest version}
 
 ```
 
-2.  Add the following imports to your Dart code
+2.  ## Add the following imports to your Dart code
 
 ```bash
 
@@ -29,7 +29,7 @@ import 'package:picker_instagram/picker_instagram.dart';
 
 ```
 
-3. Usage Code
+3. ## Usage Code
 
 ```bash
 import 'package:flutter/material.dart';
@@ -85,6 +85,9 @@ xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yourcompany.yourpackage">
 
+//also addd the Internet permissomn
+
+<uses-permission android:name="android.permission.INTERNET" /> 
 
  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -124,7 +127,7 @@ xml
 
 ```
 
-Screenshots
+## Screenshots
 
 Here are some screenshots of the example app demonstrating the key features of this package:
 
