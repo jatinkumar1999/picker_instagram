@@ -57,13 +57,7 @@ class _ExampleScreenState extends State<ExampleScreen> {
               context,
               type: PickerInsta.both,
               onComplete: (value) {
-                if ((value ?? []).isNotEmpty) {
-                  Get.to(
-                    () => PreviewAssetPickedScreen(
-                      preViewList: value ?? [],
-                    ),
-                  );
-                }
+                //  Here you can add the your logic after selecttion
               },
             );
           },
@@ -87,7 +81,7 @@ xml
 
 //also addd the Internet permissomn
 
-<uses-permission android:name="android.permission.INTERNET" /> 
+<uses-permission android:name="android.permission.INTERNET" />
 
  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
