@@ -35,7 +35,6 @@ import 'package:picker_instagram/picker_instagram.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:picker_instagram/picker_instagram.dart';
-
 import 'preview_picked_assets_screen.dart';
 
 class ExampleScreen extends StatefulWidget {
