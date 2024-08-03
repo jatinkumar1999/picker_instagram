@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
+// import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../camera_image_video_picker.dart';
@@ -44,7 +44,7 @@ class CameraAndMultipleSelectionView extends StatelessWidget {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(60),
-                    color: controller.isMultipleSelection.value
+                    color: controller.isMultipleSelection
                         ? Colors.blue
                         : const Color(0xff1E1E1E),
                   ),
@@ -53,7 +53,7 @@ class CameraAndMultipleSelectionView extends StatelessWidget {
                     style: GoogleFonts.laila(
                       fontSize: 10,
                       color: Colors.white,
-                      fontWeight: controller.isMultipleSelection.value
+                      fontWeight: controller.isMultipleSelection
                           ? FontWeight.w600
                           : FontWeight.w500,
                     ),
@@ -62,20 +62,33 @@ class CameraAndMultipleSelectionView extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               GestureDetector(
-                onTap: !controller.isMultipleSelection.value
+                onTap: !controller.isMultipleSelection
                     ? () {
                         if (removeVideoListener != null) {
                           removeVideoListener!();
                         }
                         controller.removeVideoController();
 
-                        Get.to(
-                          () => const CameraScreen(),
-                        )?.then((value) {
-                          if (value != null) {
-                            onComplete(value);
-                          }
-                        });
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const CameraScreen(),
+                          ),
+                        ).then(
+                          (value) {
+                            if (value != null) {
+                              onComplete(value);
+                            }
+                          },
+                        );
+
+                        // Get.to(
+                        //   () => const CameraScreen(),
+                        // )?.then((value) {
+                        //   if (value != null) {
+                        //     onComplete(value);
+                        //   }
+                        // });
                       }
                     : () {},
                 child: Container(
@@ -89,7 +102,7 @@ class CameraAndMultipleSelectionView extends StatelessWidget {
                   child: Center(
                     child: FaIcon(
                       FontAwesomeIcons.camera,
-                      color: !controller.isMultipleSelection.value
+                      color: !controller.isMultipleSelection
                           ? Colors.white
                           : Colors.grey.withOpacity(0.45),
                       size: 18,

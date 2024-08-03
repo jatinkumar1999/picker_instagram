@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPlayerItem extends StatefulWidget {
@@ -41,7 +40,9 @@ class VideoPlayerItemState extends State<VideoPlayerItem> {
         // widget.videoController!.value.isInitialized
         //     ?
         AspectRatio(
-          aspectRatio: widget.aspectRatio ?? (Get.width) / (Get.height - 325),
+          aspectRatio: widget.aspectRatio ??
+              (MediaQuery.of(context).size.width) /
+                  (MediaQuery.of(context).size.height - 325),
           // aspectRatio:  controller.value.aspectRatio,
           child: VideoPlayer(
             widget.videoController,
@@ -153,7 +154,8 @@ class VideoPlayerWithNetworkUrlState extends State<VideoPlayerWithNetworkUrl>
               videoController?.value.isInitialized == true
                   ? AspectRatio(
                       aspectRatio: widget.aspectRatio ??
-                          (Get.width) / (Get.height - 325),
+                          (MediaQuery.of(context).size.width) /
+                              (MediaQuery.of(context).size.height - 325),
                       child: VideoPlayer(videoController!),
                     )
                   : const SizedBox(),
@@ -270,7 +272,8 @@ class VideoPlayerWithFileUrlState extends State<VideoPlayerWithFileUrl> {
                       aspectRatio: widget.isVideoAspect == true
                           ? videoController!.value.aspectRatio
                           : widget.aspectRatio ??
-                              (Get.width) / (Get.height - 325),
+                              (MediaQuery.of(context).size.width) /
+                                  (MediaQuery.of(context).size.height - 325),
                       child: VideoPlayer(videoController!),
                     )
                   : const SizedBox(),

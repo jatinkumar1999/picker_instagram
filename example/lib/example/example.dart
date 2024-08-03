@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:picker_instagram/constants/video_image_picker/preview_picked_assets_screen.dart';
 // import 'package:picker_instagram/picker_instagram.dart';
 import 'package:get/get.dart';
 import 'package:picker_instagram/picker_instagram.dart';
+
+import 'preview_picked_assets_screen.dart';
 
 class ExampleScreen extends StatefulWidget {
   const ExampleScreen({super.key});
@@ -18,12 +19,11 @@ class _ExampleScreenState extends State<ExampleScreen> {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            
             PickerInstagram.instagramPicker(
+              context,
               type: PickerInsta.both,
               onComplete: (value) {
                 if ((value ?? []).isNotEmpty) {
-                  
                   Get.to(
                     () => PreviewAssetPickedScreen(
                       preViewList: value ?? [],

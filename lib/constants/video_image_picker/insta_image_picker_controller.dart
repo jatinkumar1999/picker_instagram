@@ -5,7 +5,6 @@ import 'dart:typed_data';
 import 'package:cropperx/cropperx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:get/get.dart';
 import 'package:mime/mime.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -15,25 +14,25 @@ import 'package:video_thumbnail/video_thumbnail.dart';
 
 import '../../picker_instagram.dart';
 
-class InstagramImagePickerController extends GetxController {
+class InstagramImagePickerController extends ChangeNotifier {
   final PickerInsta? type;
   InstagramImagePickerController({this.type = PickerInsta.both});
-  RxList<SetImageModal> entities = <SetImageModal>[].obs;
-  RxList<SetImageModal> finalList = <SetImageModal>[].obs;
-  Rx<SetImageModal> oneFile =
-      SetImageModal(cropperKey: GlobalKey(debugLabel: 'cropperKey')).obs;
-  Rx<SetImageModal> oneFileSend =
-      SetImageModal(cropperKey: GlobalKey(debugLabel: 'cropperKey')).obs;
-  RxInt page = 0.obs;
-  RxBool isPaginateLoading = false.obs;
-  RxBool isMultipleSelection = false.obs;
-  RxBool isLoading = false.obs;
-  RxList<SetImageModal> selectedImages = <SetImageModal>[].obs;
-  RxBool isGettingPaginationData = false.obs;
-  RxBool isFullAspectRatio = false.obs;
-  Rx<GlobalKey> cropperKey = GlobalKey(debugLabel: 'cropperKey').obs;
-  RxBool isCropImage = false.obs;
-  RxList<String> selectImagesIds = <String>[].obs;
+  List<SetImageModal> entities = <SetImageModal>[];
+  List<SetImageModal> finalList = <SetImageModal>[];
+  SetImageModal oneFile =
+      SetImageModal(cropperKey: GlobalKey(debugLabel: 'cropperKey'));
+  SetImageModal oneFileSend =
+      SetImageModal(cropperKey: GlobalKey(debugLabel: 'cropperKey'));
+  int page = 0;
+  bool isPaginateLoading = false;
+  bool isMultipleSelection = false;
+  bool isLoading = false;
+  List<SetImageModal> selectedImages = <SetImageModal>[];
+  bool isGettingPaginationData = false;
+  bool isFullAspectRatio = false;
+  GlobalKey cropperKey = GlobalKey(debugLabel: 'cropperKey');
+  bool isCropImage = false;
+  List<String> selectImagesIds = <String>[];
 
   bool isSelected(String id) => selectImagesIds.any((element) => element == id);
 
@@ -41,10 +40,15 @@ class InstagramImagePickerController extends GetxController {
     videoCtrl = null;
     videoCtrl?.removeListener(() {});
     videoCtrl?.dispose();
-    update();
+    notifyListeners();
   }
 
   VideoPlayerController? videoCtrl;
+
+  void clearFinalList() {
+    finalList = [];
+    notifyListeners();
+  }
 
   setVideoController(
     File? file, {
@@ -58,24 +62,21 @@ class InstagramImagePickerController extends GetxController {
         build != null ? build() : null;
       })
       ..initialize().then((value) {
-        update();
+        notifyListeners();
       });
 
-    update();
+    notifyListeners();
+  }
+
+  void notifyUi() {
+    notifyListeners();
   }
 
   removeControllerVideoPLayer() {
-    videoCtrl?.dispose();
-    videoCtrl = null;
-    update();
-  }
-
-  @override
-  void onClose() {
     videoCtrl = null;
     videoCtrl?.removeListener(() {});
     videoCtrl?.dispose();
-    super.onClose();
+    notifyListeners();
   }
 
   Future<void> clearCache() async {
@@ -113,12 +114,7 @@ class InstagramImagePickerController extends GetxController {
     // );
     // oneFile.value = clickedData;
 
-    selectedImages.refresh();
-    finalList.refresh();
-    oneFile.refresh();
-    selectImagesIds.refresh();
-
-    update();
+    notifyListeners();
   }
 
   //Permisson For new package
@@ -141,7 +137,9 @@ class InstagramImagePickerController extends GetxController {
 
   List<Medium> media = [];
   Future<void> initAlbums() async {
-    isLoading(true);
+    isLoading = true;
+
+    notifyListeners();
     if (await _promptPermissionSetting()) {
       List<Album> albums = await PhotoGallery.listAlbums(
         hideIfEmpty: true,
@@ -165,19 +163,18 @@ class InstagramImagePickerController extends GetxController {
           mediumId: media.first.id,
         );
         if (media.first.mediumType == MediumType.video) {
-          oneFile.value = SetImageModal(
-            id: media.first.id,
+          oneFile = SetImageModal(
+            id: '${media.first.id}00',
             type: media.first.mediumType,
             realFile: file,
             cropperKey: GlobalKey(debugLabel: media.first.id),
           );
 
-          oneFile.refresh();
-          isLoading(false);
-          update();
+          isLoading = false;
+          notifyListeners();
         } else {
-          oneFile.value = SetImageModal(
-            id: media.first.id,
+          oneFile = SetImageModal(
+            id: "${media.first.id}00",
             type: media.first.mediumType,
             realFile: file,
             thumbnailFile: null,
@@ -185,41 +182,40 @@ class InstagramImagePickerController extends GetxController {
           );
         }
       }
-      oneFile.refresh();
-      isLoading(false);
-      update();
+
+      isLoading = false;
+      notifyListeners();
     } else {
-      isLoading(false);
+      isLoading = false;
     }
+    notifyListeners();
   }
 
-  RxBool isNextLoading = false.obs;
+  bool isNextLoading = false;
 
   Future<bool> getFilesFromTheAssetsSingle() async {
-    isNextLoading(true);
+    isNextLoading = true;
 
-    File file =
-        await PhotoGallery.getFile(mediumId: oneFileSend.value.id ?? "");
+    File file = await PhotoGallery.getFile(mediumId: oneFileSend.id ?? "");
     var type = lookupMimeType(file.path);
     finalList.add(
       SetImageModal(
-        id: oneFileSend.value.id,
+        id: oneFileSend.id,
         type: (type ?? '').contains('video/')
             ? MediumType.video
             : MediumType.image,
         realFile: file,
-        cropperKey: GlobalKey(debugLabel: oneFileSend.value.id ?? ''),
+        cropperKey: GlobalKey(debugLabel: oneFileSend.id ?? ''),
       ),
     );
-    isNextLoading(false);
-    finalList.refresh();
+    isNextLoading = false;
 
-    update();
+    notifyListeners();
     return true;
   }
 
   Future<bool> getFilesFromTheAssets() async {
-    isNextLoading(true);
+    isNextLoading = true;
 
     for (var i = 0; i < selectImagesIds.length; i++) {
       var ids = selectImagesIds[i];
@@ -250,105 +246,90 @@ class InstagramImagePickerController extends GetxController {
     selectedImages.clear();
     finalList.clear();
     selectImagesIds.clear();
-    oneFile.value =
+    oneFile = SetImageModal(cropperKey: GlobalKey(debugLabel: 'cropperKey'));
+    oneFileSend =
         SetImageModal(cropperKey: GlobalKey(debugLabel: 'cropperKey'));
-    oneFileSend.value =
-        SetImageModal(cropperKey: GlobalKey(debugLabel: 'cropperKey'));
-    update();
+    notifyListeners();
   }
 
   void setAspectRatio() {
-    isFullAspectRatio.value = !isFullAspectRatio.value;
-    isFullAspectRatio.refresh();
-    update();
-  }
+    isFullAspectRatio = !isFullAspectRatio;
 
-  @override
-  Future<void> onInit() async {
-    super.onInit();
-
-    await initAlbums();
+    notifyListeners();
   }
 
   void addCropAssets(File? file) {
-    bool isContains =
-        finalList.any((element) => element.id == oneFile.value.id);
-    if (isMultipleSelection.value == false) {
+    bool isContains = finalList.any((element) => element.id == oneFile.id);
+    if (isMultipleSelection == false) {
       finalList.clear();
 
-      if (oneFile.value.realFile != null) {
+      if (oneFile.realFile != null) {
         if (isContains == false) {
           finalList.add(
             SetImageModal(
-              id: oneFile.value.id,
-              type: oneFile.value.type,
-              realFile: file ?? oneFile.value.realFile,
-              thumbnailFile: oneFile.value.thumbnailFile,
-              cropperKey: oneFile.value.cropperKey,
+              id: oneFile.id,
+              type: oneFile.type,
+              realFile: file ?? oneFile.realFile,
+              thumbnailFile: oneFile.thumbnailFile,
+              cropperKey: oneFile.cropperKey,
             ),
           );
         } else {
-          finalList.removeWhere((element) => element.id == oneFile.value.id);
-          finalList.refresh();
+          finalList.removeWhere((element) => element.id == oneFile.id);
+
           finalList.add(
             SetImageModal(
-              id: oneFile.value.id,
-              type: oneFile.value.type,
-              realFile: file ?? oneFile.value.realFile,
-              thumbnailFile: oneFile.value.thumbnailFile,
-              cropperKey: oneFile.value.cropperKey,
+              id: oneFile.id,
+              type: oneFile.type,
+              realFile: file ?? oneFile.realFile,
+              thumbnailFile: oneFile.thumbnailFile,
+              cropperKey: oneFile.cropperKey,
             ),
           );
         }
-
-        finalList.refresh();
       }
     } else {
-      if (oneFile.value.realFile != null) {
+      if (oneFile.realFile != null) {
         if (isContains == false) {
           finalList.add(
             SetImageModal(
-              id: oneFile.value.id,
-              type: oneFile.value.type,
-              realFile: file ?? oneFile.value.realFile,
-              thumbnailFile: oneFile.value.thumbnailFile,
-              cropperKey: oneFile.value.cropperKey,
+              id: oneFile.id,
+              type: oneFile.type,
+              realFile: file ?? oneFile.realFile,
+              thumbnailFile: oneFile.thumbnailFile,
+              cropperKey: oneFile.cropperKey,
             ),
           );
         } else {
-          finalList.removeWhere((element) => element.id == oneFile.value.id);
-          finalList.refresh();
+          finalList.removeWhere((element) => element.id == oneFile.id);
           finalList.add(
             SetImageModal(
-              id: oneFile.value.id,
-              type: oneFile.value.type,
-              realFile: file ?? oneFile.value.realFile,
-              thumbnailFile: oneFile.value.thumbnailFile,
-              cropperKey: oneFile.value.cropperKey,
+              id: oneFile.id,
+              type: oneFile.type,
+              realFile: file ?? oneFile.realFile,
+              thumbnailFile: oneFile.thumbnailFile,
+              cropperKey: oneFile.cropperKey,
             ),
           );
         }
-
-        finalList.refresh();
       }
     }
+    notifyListeners();
   }
 
   void setMultipleSelection(bool value) {
-    oneFileSend.value.id = '';
-    if (!isMultipleSelection.value) {
-      isMultipleSelection(true);
+    oneFileSend.id = '';
+    if (!isMultipleSelection) {
+      isMultipleSelection = true;
     } else {
-      isMultipleSelection(false);
+      isMultipleSelection = false;
       selectedImages.clear();
       selectImagesIds.clear();
     }
 
     finalList.clear();
-    isMultipleSelection.refresh();
-    oneFileSend.refresh();
-    selectedImages.refresh();
-    update();
+
+    notifyListeners();
   }
 
   Future<Uint8List?>? thumbnailFromVideo(File file) async {
@@ -374,34 +355,34 @@ class InstagramImagePickerController extends GetxController {
   }
 
   void resetValues(SetImageModal item, File? file) {
-    oneFileSend.value = SetImageModal(
-      id: oneFileSend.value.id,
-      type: oneFileSend.value.type,
-      realFile: file ?? oneFileSend.value.realFile,
-      thumbnailFile: oneFileSend.value.thumbnailFile,
-      cropperKey: oneFileSend.value.cropperKey,
+    oneFileSend = SetImageModal(
+      id: oneFileSend.id,
+      type: oneFileSend.type,
+      realFile: file ?? oneFileSend.realFile,
+      thumbnailFile: oneFileSend.thumbnailFile,
+      cropperKey: oneFileSend.cropperKey,
     );
-    oneFileSend.refresh();
-    update();
+
+    notifyListeners();
   }
 
   Future<void> onFileOnTap(Medium item, {File? file, Function? build}) async {
-    isFullAspectRatio.value = true;
+    isFullAspectRatio = true;
     if (item.mediumType == MediumType.video) {
-      oneFile.value = SetImageModal(
+      oneFile = SetImageModal(
         cropperKey: GlobalKey(debugLabel: item.id),
       );
-      oneFileSend.value = SetImageModal(
+      oneFileSend = SetImageModal(
         cropperKey: GlobalKey(debugLabel: item.id),
       );
 
-      oneFile.value = SetImageModal(
+      oneFile = SetImageModal(
         id: item.id,
         type: item.mediumType,
         realFile: file,
         cropperKey: GlobalKey(debugLabel: item.id),
       );
-      oneFileSend.value = SetImageModal(
+      oneFileSend = SetImageModal(
         id: item.id,
         type: item.mediumType,
         cropperKey: GlobalKey(debugLabel: item.id),
@@ -414,13 +395,13 @@ class InstagramImagePickerController extends GetxController {
     } else if (item.mediumType == MediumType.image) {
       var file = await PhotoGallery.getFile(mediumId: item.id);
 
-      oneFile.value = SetImageModal(
+      oneFile = SetImageModal(
         id: item.id,
         type: item.mediumType,
         realFile: file,
         cropperKey: GlobalKey(debugLabel: item.id),
       );
-      oneFileSend.value = SetImageModal(
+      oneFileSend = SetImageModal(
         id: item.id,
         type: item.mediumType,
         realFile: file,
@@ -428,25 +409,23 @@ class InstagramImagePickerController extends GetxController {
       );
     }
 
-    oneFile.refresh();
-    oneFileSend.refresh();
-    update();
+    notifyListeners();
   }
 
   Future<void> saveAssetAfterCrop() async {
-    isCropImage.value = true;
+    isCropImage = true;
     var imageBytes = await Cropper.crop(
-      cropperKey: oneFile.value.cropperKey,
+      cropperKey: oneFile.cropperKey,
     );
     var file = await saveImage(imageBytes!);
 
     resetValues(
-      oneFile.value,
+      oneFile,
       file,
     );
 
     addCropAssets(file);
-    isCropImage.value = false;
+    isCropImage = false;
   }
 
   Future<File> saveImage(Uint8List imageBytes, {File? file}) async {

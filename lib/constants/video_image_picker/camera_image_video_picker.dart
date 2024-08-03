@@ -4,7 +4,6 @@ import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_gallery/photo_gallery.dart';
@@ -32,7 +31,7 @@ class CameraScreenState extends State<CameraScreen> {
   void initState() {
     super.initState();
 
-    _initializeCamera();
+    _initializeCamera(context);
   }
 
   @override
@@ -42,7 +41,7 @@ class CameraScreenState extends State<CameraScreen> {
     super.dispose();
   }
 
-  Future<void> _initializeCamera() async {
+  Future<void> _initializeCamera(BuildContext context) async {
     isRecording = false;
     final status = await Permission.camera.request();
     if (status != PermissionStatus.granted) {
@@ -64,18 +63,19 @@ class CameraScreenState extends State<CameraScreen> {
     }
   }
 
-  Future<void> _capturePhoto() async {
+  Future<void> _capturePhoto(BuildContext context) async {
     try {
       var image = await controller!.takePicture();
 
-      RxList<SetImageModal> list = <SetImageModal>[].obs;
+      List<SetImageModal> list = <SetImageModal>[];
 
       list.add(SetImageModal(
           realFile: File(image.path),
           thumbnailFile: null,
           type: MediumType.image,
           cropperKey: GlobalKey(debugLabel: 'image')));
-      Get.back(result: list);
+      // ignore: use_build_context_synchronously
+      Navigator.pop(context, list);
     } catch (e) {
       debugPrint('Error: $e');
     }
@@ -124,7 +124,7 @@ class CameraScreenState extends State<CameraScreen> {
         var videoPath = await controller!.stopVideoRecording();
 
         _timer?.cancel();
-        RxList<SetImageModal> list = <SetImageModal>[].obs;
+        List<SetImageModal> list = <SetImageModal>[];
 
         list.add(
           SetImageModal(
@@ -137,7 +137,8 @@ class CameraScreenState extends State<CameraScreen> {
         setState(() {
           isRecording = false;
         });
-        Get.back(result: list);
+        // ignore: use_build_context_synchronously
+        Navigator.pop(context, list);
 
         debugPrint('Recording stopped');
       } catch (e) {
@@ -189,13 +190,13 @@ class CameraScreenState extends State<CameraScreen> {
         child: Stack(
           children: [
             SizedBox(
-              width: Get.width,
-              height: Get.height,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
               child: CameraPreview(
                 controller!,
                 child: SizedBox(
-                  width: Get.width,
-                  height: Get.height,
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
                 ),
               ),
             ),
@@ -243,7 +244,7 @@ class CameraScreenState extends State<CameraScreen> {
                       color: Colors.white,
                       size: 40,
                     ),
-                    onPressed: _capturePhoto,
+                    onPressed: () => _capturePhoto(context),
                   ),
                   IconButton(
                     icon: Icon(

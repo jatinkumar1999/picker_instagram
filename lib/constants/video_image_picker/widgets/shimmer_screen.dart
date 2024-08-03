@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:get/get.dart';
+// import 'package:get/get.dart';
 
 import '../../shimmer/common_shimmer.dart';
 
@@ -13,7 +13,7 @@ class ShimmerScreen extends StatelessWidget {
         child: Column(
       children: [
         CommonShimmerScreen(
-          width: Get.width,
+          width: MediaQuery.of(context).size.width,
           height: 480,
           radius: 0,
         ),

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:cropperx/cropperx.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+// import 'package:get/get.dart';
 
 import '../../shimmer/common_shimmer.dart';
 import '../insta_image_picker_controller.dart';
@@ -27,11 +27,11 @@ class _TopImagePreviewState extends State<TopImagePreview> {
   Widget build(BuildContext context) {
     return widget.file == null
         ? CommonShimmerScreen(
-            width: Get.width,
+            width: MediaQuery.of(context).size.width,
             height: 380,
           )
         : Cropper(
-            cropperKey: widget.controller.oneFile.value.cropperKey,
+            cropperKey: widget.controller.oneFile.cropperKey,
             gridLineThickness: 1,
             overlayType: OverlayType.grid,
             overlayColor: Colors.black45,
@@ -47,7 +47,7 @@ class _TopImagePreviewState extends State<TopImagePreview> {
                 }
                 if (frame == null) {
                   return CommonShimmerScreen(
-                    width: Get.width,
+                    width: MediaQuery.of(context).size.width,
                     height: 380,
                   );
                 }
@@ -60,9 +60,9 @@ class _TopImagePreviewState extends State<TopImagePreview> {
                 );
               },
               fit: BoxFit.cover,
-              width: widget.controller.isFullAspectRatio.value
-                  ? Get.width
-                  : Get.width * 0.65,
+              width: widget.controller.isFullAspectRatio
+                  ? MediaQuery.of(context).size.width
+                  : MediaQuery.of(context).size.width * 0.65,
               height: 0,
             ),
           );
