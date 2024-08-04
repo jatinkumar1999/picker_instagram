@@ -33,17 +33,17 @@ import 'package:picker_instagram/picker_instagram.dart';
 
 ```bash
 
-       //Use this code for the picker instagram
+//Use this code for the picker instagram
 
-        PickerInstagram.instagramPicker(
-              context,
-              type: PickerInsta.both,
-              onComplete: (value) {
+PickerInstagram.instagramPicker(
+  context,
+  type: PickerInsta.both,
+  onComplete: (value) {
 
-                //  Here you can add the your logic after selecttion
+  //  Here you can add the your logic after selecttion
              
-              },
-            );
+    },
+  );
 
 ```
 
