@@ -41,7 +41,7 @@ PickerInstagram.instagramPicker(
   onComplete: (value) {
 
   //  Here you can add the your logic after selecttion
-             
+
     },
   );
 
@@ -60,7 +60,7 @@ xml
 
 <uses-permission android:name="android.permission.INTERNET" />
 
-// These permissiona  are must
+// These permissions  are must
 
  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -85,7 +85,7 @@ xml
 <dict>
 	...
 
-// These permissiona  are must
+// These permissions  are must
 
 <key>NSCameraUsageDescription</key>
 <string>your usage description here</string>
