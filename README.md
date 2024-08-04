@@ -6,7 +6,7 @@ A Flutter package for picking images or the videos or both from the Gallery.
 
 Usage
 
-1. ## Add dependency
+## 1. Add dependency
 
 Please check the latest version before installation. If there is any problem with the new version, please use the previous version
 
@@ -21,7 +21,7 @@ picker_instagram: ^{latest version}
 
 ```
 
-2.  ## Add the following imports to your Dart code
+## 2. Add the following imports to your Dart code
 
 ```bash
 
@@ -29,42 +29,21 @@ import 'package:picker_instagram/picker_instagram.dart';
 
 ```
 
-3. ## Usage Code
+## 3. Usage Code
 
 ```bash
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:picker_instagram/picker_instagram.dart';
-import 'preview_picked_assets_screen.dart';
 
-class ExampleScreen extends StatefulWidget {
-  const ExampleScreen({super.key});
+       //Use this code for the picker instagram
 
-  @override
-  State<ExampleScreen> createState() => _ExampleScreenState();
-}
-
-class _ExampleScreenState extends State<ExampleScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            PickerInstagram.instagramPicker(
+        PickerInstagram.instagramPicker(
               context,
               type: PickerInsta.both,
               onComplete: (value) {
+
                 //  Here you can add the your logic after selecttion
+             
               },
             );
-          },
-          child: const Text('pick images'),
-        ),
-      ),
-    );
-  }
-}
 
 ```
 
@@ -77,9 +56,11 @@ xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yourcompany.yourpackage">
 
-//also addd the Internet permissomn
+//Also add the Internet Permission
 
 <uses-permission android:name="android.permission.INTERNET" />
+
+// These permissiona  are must
 
  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -103,6 +84,8 @@ xml
 <plist version="1.0">
 <dict>
 	...
+
+// These permissiona  are must
 
 <key>NSCameraUsageDescription</key>
 <string>your usage description here</string>
