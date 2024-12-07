@@ -46,6 +46,7 @@ dependencies:
   video_player: ^2.9.1
   photo_gallery: ^2.2.1
   font_awesome_flutter: ^10.7.0
+  camera: ^0.11.0+2
 
 dev_dependencies:
   flutter_test:

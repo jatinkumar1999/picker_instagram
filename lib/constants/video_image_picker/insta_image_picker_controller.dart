@@ -416,6 +416,7 @@ class InstagramImagePickerController extends ChangeNotifier {
     isCropImage = true;
     var imageBytes = await Cropper.crop(
       cropperKey: oneFile.cropperKey,
+      
     );
     var file = await saveImage(imageBytes!);
 
