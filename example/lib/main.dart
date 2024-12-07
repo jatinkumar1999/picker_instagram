@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'camera_demo.dart';
+import 'example/example.dart';
 
 void main() {
   runApp(const MyApp());
@@ -36,8 +37,8 @@ class MyApp extends StatelessWidget {
             home: child,
           );
         },
-        // child: const ExampleScreen(),
-        child: const CameraExampleHome(),
+        child: const ExampleScreen(),
+        // child: const CameraExampleHome(),
       ),
     );
   }
