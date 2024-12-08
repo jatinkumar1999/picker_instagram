@@ -36,10 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   picker_instagram:
     path: ../
-  # picker_instagram:
-  #   git:
-  #     url: https://github.com/jatinkumar1999/picker_instagram.git
-  #     ref: main
+
   get: ^4.6.6
   permission_handler: ^11.3.1
   flutter_screenutil: ^5.9.3
@@ -48,10 +45,10 @@ dependencies:
   font_awesome_flutter: ^10.7.0
   camera: ^0.11.0+2
 
-  # photo_gallery:
-  #   git:
-  #     url: https://github.com/DeuMiAn/photo_gallery.git
-  #     ref: master
+  photo_gallery:
+    git:
+      url: https://github.com/DeuMiAn/photo_gallery.git
+      ref: master
 
 dev_dependencies:
   flutter_test:

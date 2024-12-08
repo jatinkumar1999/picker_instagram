@@ -649,7 +649,7 @@ packages:
     source: hosted
     version: "6.0.2"
   photo_gallery:
-    dependency: transitive
+    dependency: "direct main"
     description:
       path: "."
       ref: master
