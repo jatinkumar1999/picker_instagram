@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_gallery/photo_gallery.dart';
@@ -27,6 +28,7 @@ class CameraScreenState extends State<CameraScreen> {
   int _elapsedTime = 0;
   static const int _maxRecordingTime = 120; // 2 minutes
   bool isRearCamera = false;
+  bool _isPaused = false;
   @override
   void initState() {
     super.initState();
@@ -90,9 +92,12 @@ class CameraScreenState extends State<CameraScreen> {
           _elapsedTime = 0;
         });
         _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-          setState(() {
-            _elapsedTime++;
-          });
+          if (!_isPaused) {
+            setState(() {
+              _elapsedTime++;
+            });
+          }
+
           if (_elapsedTime >= _maxRecordingTime) {
             _stopVideoRecording();
           }
@@ -100,6 +105,41 @@ class CameraScreenState extends State<CameraScreen> {
         setState(() {
           isRecording = true;
         });
+        debugPrint('Recording started');
+      } catch (e) {
+        debugPrint('Error: $e');
+      }
+    }
+  }
+
+  void _pauseTimer() {
+    setState(() {
+      _isPaused = true;
+    });
+  }
+
+  void _resumeTimer() {
+    setState(() {
+      _isPaused = false;
+    });
+  }
+
+  Future<void> _pauseVideoRecording() async {
+    if (controller!.value.isRecordingVideo) {
+      try {
+        await controller!.pauseVideoRecording();
+        _pauseTimer();
+      } catch (e) {
+        debugPrint('Error: $e');
+      }
+    }
+  }
+
+  Future<void> _resumeVideoRecording() async {
+    if (controller!.value.isRecordingVideo) {
+      try {
+        await controller!.resumeVideoRecording();
+        _resumeTimer();
         debugPrint('Recording started');
       } catch (e) {
         debugPrint('Error: $e');
@@ -189,22 +229,75 @@ class CameraScreenState extends State<CameraScreen> {
       body: SafeArea(
         child: Stack(
           children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: CameraPreview(
-                controller!,
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
+            Column(
+              children: [
+                Expanded(
+                  child: CameraPreview(
+                    controller!,
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                    ),
+                  ),
                 ),
-              ),
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 600),
+                  curve: Curves.linear,
+                  color: Colors.black,
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      if (!isRecording)
+                        IconButton(
+                          icon: const FaIcon(
+                            FontAwesomeIcons.cameraRotate,
+                            color: Colors.white,
+                            size: 25,
+                          ),
+                          onPressed: changeCamera,
+                        ),
+                      IconButton(
+                        icon: FaIcon(
+                          isRecording
+                              ? _isPaused
+                                  ? FontAwesomeIcons.play
+                                  : FontAwesomeIcons.pause
+                              : FontAwesomeIcons.camera,
+                          color: Colors.white,
+                          size: 25,
+                        ),
+                        onPressed: () => isRecording
+                            ? _isPaused == true
+                                ? _resumeVideoRecording()
+                                : _pauseVideoRecording()
+                            : _capturePhoto(context),
+                      ),
+                      IconButton(
+                        icon: FaIcon(
+                          isRecording
+                              ? FontAwesomeIcons.stop
+                              : FontAwesomeIcons.video,
+                          color:
+                              isRecording == true ? Colors.red : Colors.white,
+                          size: 25,
+                        ),
+                        onPressed: isRecording
+                            ? _stopVideoRecording
+                            : _startVideoRecording,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
             if (isRecording)
               Positioned(
                 top: 20,
                 left: 20,
-                child: Container(
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.linear,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 20,
                     vertical: 4,
@@ -214,51 +307,15 @@ class CameraScreenState extends State<CameraScreen> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Text(
-                    _formatElapsedTime(_elapsedTime),
+                    _isPaused ? 'Paused' : _formatElapsedTime(_elapsedTime),
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 18,
+                      fontSize: 14,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
                 ),
               ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  IconButton(
-                    icon: const Icon(
-                      Icons.change_circle,
-                      color: Colors.white,
-                      size: 40,
-                    ),
-                    onPressed: changeCamera,
-                  ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.camera,
-                      color: Colors.white,
-                      size: 40,
-                    ),
-                    onPressed: () => _capturePhoto(context),
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      isRecording ? Icons.stop : Icons.videocam,
-                      color: Colors.white,
-                      size: 40,
-                    ),
-                    onPressed: isRecording
-                        ? _stopVideoRecording
-                        : _startVideoRecording,
-                  ),
-                ],
-              ),
-            ),
           ],
         ),
       ),

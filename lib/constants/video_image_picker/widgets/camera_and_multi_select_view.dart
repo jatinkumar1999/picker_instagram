@@ -52,10 +52,10 @@ class CameraAndMultipleSelectionView extends StatelessWidget {
                     'SELECT MULTIPLE',
                     style: GoogleFonts.laila(
                       fontSize: 10,
-                      color: Colors.white,
-                      fontWeight: controller.isMultipleSelection
-                          ? FontWeight.w600
-                          : FontWeight.w500,
+                      color: controller.isMultipleSelection
+                          ? Colors.black
+                          : Colors.white,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
@@ -81,14 +81,6 @@ class CameraAndMultipleSelectionView extends StatelessWidget {
                             }
                           },
                         );
-
-                        // Get.to(
-                        //   () => const CameraScreen(),
-                        // )?.then((value) {
-                        //   if (value != null) {
-                        //     onComplete(value);
-                        //   }
-                        // });
                       }
                     : () {},
                 child: Container(

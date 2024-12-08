@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
-
 import 'package:cropperx/cropperx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -11,7 +10,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_gallery/photo_gallery.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
-
 import '../../picker_instagram.dart';
 
 class InstagramImagePickerController extends ChangeNotifier {
@@ -38,7 +36,9 @@ class InstagramImagePickerController extends ChangeNotifier {
 
   removeVideoController() {
     videoCtrl = null;
-    videoCtrl?.removeListener(() {});
+    videoCtrl?.removeListener(
+      () {},
+    );
     videoCtrl?.dispose();
     notifyListeners();
   }
@@ -140,7 +140,9 @@ class InstagramImagePickerController extends ChangeNotifier {
     isLoading = true;
 
     notifyListeners();
-    if (await _promptPermissionSetting()) {
+    var isPermission = await _promptPermissionSetting();
+    debugPrint('isPermission=>>$isPermission');
+    if (isPermission) {
       List<Album> albums = await PhotoGallery.listAlbums(
         hideIfEmpty: true,
         mediumType: ((type ?? PickerInsta.both) == PickerInsta.both)
@@ -416,7 +418,6 @@ class InstagramImagePickerController extends ChangeNotifier {
     isCropImage = true;
     var imageBytes = await Cropper.crop(
       cropperKey: oneFile.cropperKey,
-      
     );
     var file = await saveImage(imageBytes!);
 

@@ -33,14 +33,14 @@ import 'package:picker_instagram/picker_instagram.dart';
 
 ```bash
 
-//Use this code for the picker instagram
+///Use this code for the picker instagram
 
 PickerInstagram.instagramPicker(
   context,
   type: PickerInsta.both,
   onComplete: (value) {
 
-  //  Here you can add the your logic after selecttion
+  ///Here you can add the your logic after selecttion
 
     },
   );
@@ -56,11 +56,11 @@ xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yourcompany.yourpackage">
 
-//Also add the Internet Permission
+///Also add the Internet Permission
 
 <uses-permission android:name="android.permission.INTERNET" />
 
-// These permissions  are must
+///These permissions  are must
 
  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -85,7 +85,7 @@ xml
 <dict>
 	...
 
-// These permissions  are must
+///These permissions  are must
 
 <key>NSCameraUsageDescription</key>
 <string>your usage description here</string>

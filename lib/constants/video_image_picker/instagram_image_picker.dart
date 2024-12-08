@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart'; 
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:photo_gallery/photo_gallery.dart';
@@ -89,6 +89,7 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
                     })
                     ..initialize().then((_) {
                       setState(() {});
+                      // ignore: use_build_context_synchronously
                       Navigator.pop(context);
                     })
                     ..setLooping(true)
@@ -105,6 +106,7 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
               })
               ..initialize().then((_) {
                 setState(() {});
+                // ignore: use_build_context_synchronously
                 Navigator.pop(context);
               })
               ..setLooping(true)
@@ -275,6 +277,8 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
                                                     ''),
                                       ),
                                     );
+                                    // ignore: use_build_context_synchronously
+                                    Navigator.pop(context);
 
                                     controller.oneFileSend.realFile != null
                                         ? widget
@@ -284,6 +288,8 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
                                                 controller.finalList)
                                             : widget.onComplete([]);
                                   } else {
+                                    Navigator.pop(context);
+
                                     debugPrint('asfasf');
                                     widget.onComplete([]);
                                   }
@@ -295,9 +301,14 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
                                         .getFilesFromTheAssets();
 
                                     if (isDone) {
+                                      // ignore: use_build_context_synchronously
+                                      Navigator.pop(context);
+
                                       widget.onComplete(controller.finalList);
                                     }
                                   } else {
+                                    Navigator.pop(context);
+
                                     widget.onComplete([]);
                                   }
                                 }
@@ -305,7 +316,6 @@ class _InstagramImagePickerViewState extends State<InstagramImagePickerView> {
                                 controller.removeVideoController();
                               }
                               // ignore: use_build_context_synchronously
-                              Navigator.pop(context);
                             },
                       child: isVideoLoading
                           ? const SizedBox()
