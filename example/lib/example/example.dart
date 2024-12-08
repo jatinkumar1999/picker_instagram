@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 // import 'package:picker_instagram/picker_instagram.dart';
 import 'package:get/get.dart';
@@ -23,7 +25,9 @@ class _ExampleScreenState extends State<ExampleScreen> {
               context,
               type: PickerInsta.both,
               onComplete: (value) {
+                log('value=====????$value');
                 if ((value ?? []).isNotEmpty) {
+
                   Get.to(
                     () => PreviewAssetPickedScreen(
                       preViewList: value ?? [],
