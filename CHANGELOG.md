@@ -17,3 +17,7 @@
 4. ## 1.0.13
 
 - Make the camera more smooth.
+
+4. ## 1.0.14
+
+- resolve the packages issues.
