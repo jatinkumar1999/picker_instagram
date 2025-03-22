@@ -17,8 +17,8 @@ class CommonShimmerScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(radius ?? 10),
       ),
       child: Shimmer.fromColors(
-        baseColor: Colors.grey.shade400,
-        highlightColor: Colors.grey.shade500,
+        baseColor: Colors.grey.shade300,
+        highlightColor: Colors.grey.shade400,
         child: Container(
           width: width ?? double.infinity,
           height: height ?? double.infinity,

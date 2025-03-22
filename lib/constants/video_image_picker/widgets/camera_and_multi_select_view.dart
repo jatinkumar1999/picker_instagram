@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:get/get.dart';
@@ -77,6 +79,7 @@ class CameraAndMultipleSelectionView extends StatelessWidget {
                         ).then(
                           (value) {
                             if (value != null) {
+                              log('CameraScreen==>>$value');
                               onComplete(value);
                             }
                           },

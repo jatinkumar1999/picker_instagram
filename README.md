@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-A Flutter package for picking images or the videos or both from the Gallery.
+A Flutter package for selecting images, videos, or both from the gallery.
 
 Usage
 
@@ -35,7 +35,11 @@ import 'package:picker_instagram/picker_instagram.dart';
 
 ///Use this code for the picker instagram
 
-PickerInstagram.instagramPicker(
+/// Set to PickerInsta.both to allow selecting both images and videos.(enabled by default)
+/// Set to PickerInsta.images to allow selecting only images.
+/// Set to PickerInsta.videos to allow selecting only videos.
+
+PickerInstagram.picker(
   context,
   type: PickerInsta.both,
   onComplete: (value) {
@@ -108,12 +112,12 @@ Here are some screenshots of the example app demonstrating the key features of t
 
 ### Screenshot 1
 
-<img src="assets/screenshot_01.png" alt="Home Screen" width="300"/>
+<img src="https://raw.githubusercontent.com/jatinkumar1999/picker_instagram/main/assets/screenshot_01.png" alt="Home Screen" width="300"/>
 
 ### Screenshot 2
 
-<img src="assets/screenshot_02.png" alt="Home Screen" width="300"/>
+<img src="https://raw.githubusercontent.com/jatinkumar1999/picker_instagram/main/assets/screenshot_02.png" alt="Home Screen" width="300"/>
 
 ### Screenshot 3
 
-<img src="assets/screenshot_03.png" alt="Home Screen" width="300"/>
+<img src="https://raw.githubusercontent.com/jatinkumar1999/picker_instagram/main/assets/screenshot_03.png" alt="Home Screen" width="300"/>

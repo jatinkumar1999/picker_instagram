@@ -21,3 +21,7 @@
 4. ## 1.0.14
 
 - resolve the packages issues.
+
+5. ## 1.0.15
+
+- resolve screenshot shown issue.

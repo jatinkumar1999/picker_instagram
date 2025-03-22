@@ -64,13 +64,7 @@ class _GridTopViewState extends State<GridTopView> {
                                         widget.controller.oneFile.realFile!,
                                         fit: BoxFit.cover,
                                         width:
-
-                                            //  widget.controller
-                                            //         .isFullAspectRatio.value
-                                            //     ?
-                                            MediaQuery.of(context).size.width
-                                        // : Get.width * 0.65
-                                        ,
+                                            MediaQuery.of(context).size.width,
                                         height: 380,
                                       ),
                                     ),

@@ -41,14 +41,8 @@ dependencies:
   permission_handler: ^11.3.1
   flutter_screenutil: ^5.9.3
   video_player: ^2.9.1
-  photo_gallery: ^2.2.1
   font_awesome_flutter: ^10.7.0
   camera: ^0.11.0+2
-
-  # photo_gallery:
-  #   git:
-  #     url: https://github.com/DeuMiAn/photo_gallery.git
-  #     ref: master
 
 dev_dependencies:
   flutter_test:

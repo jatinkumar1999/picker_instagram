@@ -9,7 +9,7 @@ import 'constants/video_image_picker/instagram_image_picker.dart';
 enum PickerInsta { images, videos, both }
 
 class PickerInstagram {
-  static void instagramPicker(BuildContext context,
+  static void picker(BuildContext context,
       {PickerInsta? type,
       required dynamic Function(List<SetImageModal>?) onComplete}) {
     Navigator.push(

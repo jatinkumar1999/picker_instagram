@@ -21,13 +21,11 @@ class _ExampleScreenState extends State<ExampleScreen> {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            PickerInstagram.instagramPicker(
+            PickerInstagram.picker(
               context,
               type: PickerInsta.both,
               onComplete: (value) {
-                log('value=====????$value');
                 if ((value ?? []).isNotEmpty) {
-
                   Get.to(
                     () => PreviewAssetPickedScreen(
                       preViewList: value ?? [],

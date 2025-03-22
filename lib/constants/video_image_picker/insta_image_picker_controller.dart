@@ -420,7 +420,7 @@ class InstagramImagePickerController extends ChangeNotifier {
       cropperKey: oneFile.cropperKey,
     );
     var file = await saveImage(imageBytes!);
-
+    debugPrint('filefilefile==>>$file');
     resetValues(
       oneFile,
       file,
